@@ -1,4 +1,4 @@
-package org.example;
+package Task2;
 
 public class BallThread extends Thread {
     private Ball b;

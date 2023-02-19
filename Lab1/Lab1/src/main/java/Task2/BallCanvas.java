@@ -1,4 +1,4 @@
-package org.example;
+package Task2;
 
 import javax.swing.*;
 import java.awt.*;
