@@ -1,20 +1,29 @@
 package org.example;
 
-public class BallThread extends Thread {
-    private Ball b;
+import java.util.ArrayList;
 
-    public BallThread(Ball ball){
-        b = ball;
+public class BallThread extends Thread {
+    private ArrayList<Ball> balls;
+
+    private BallCanvas canvas;
+
+    public BallThread(ArrayList<Ball> balls, BallCanvas canvas){
+        this.balls = balls;
+        this.canvas = canvas;
     }
     @Override
     public void run(){
         try {
-            for(int i=1; i<10000; i++){
-                b.move();
-                // System.out.println("Thread name = " + Thread.currentThread().getName());
+            for(int j=1; j<10000; j++){
+                for (Ball ball : balls) {
+                    ball.move();
+                }
+                canvas.repaint();
                 Thread.sleep(5);
             }
         }
-        catch(InterruptedException ex){ }
+        catch(InterruptedException ex){
+            System.out.println("interrupted");
+        }
     }
 }

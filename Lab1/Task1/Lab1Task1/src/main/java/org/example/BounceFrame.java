@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Console;
+import java.util.ArrayList;
 
 public class BounceFrame extends JFrame {
     private BallCanvas canvas;
@@ -21,17 +23,16 @@ public class BounceFrame extends JFrame {
         JButton buttonStart = new JButton("Start");
         JButton buttonStop = new JButton("Stop");
         buttonStart.addActionListener(e -> {
-            for(int i = 0; i < 40000; i++)
+            ArrayList<Ball> balls = new ArrayList<>();
+            int ballsCount = 40000;
+            for(int i = 0; i < ballsCount; i++)
             {
                 Ball b = new Ball(canvas);
                 canvas.add(b);
-
-                BallThread thread = new BallThread(b);
-                thread.start();
-                // System.out.println("Thread name = " + thread.getName());
+                balls.add(b);
             }
-
-            // System.out.println("Thread name = " + thread.getName());
+            BallThread thread = new BallThread(balls, canvas);
+            thread.start();
         });
         buttonStop.addActionListener(new ActionListener() {
             @Override

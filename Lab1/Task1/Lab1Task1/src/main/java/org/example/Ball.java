@@ -64,6 +64,5 @@ class Ball {
             y = this.canvas.getHeight()-YSIZE;
             dy = -dy;
         }
-        this.canvas.repaint();
     }
 }
