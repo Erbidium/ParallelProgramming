@@ -27,10 +27,6 @@ class Ball {
         }
     }
 
-    public static void f(){
-        int a = 0;
-    }
-
     public void draw (Graphics2D g2){
         int borderSize = 3;
         g2.setColor(Color.black);

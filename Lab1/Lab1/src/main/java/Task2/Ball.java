@@ -6,6 +6,7 @@ import java.util.Random;
 
 class Ball {
     private Component canvas;
+    private Color color;
     private static final int XSIZE = 20;
     private static final int YSIZE = 20;
     private int x = 0;
@@ -14,21 +15,25 @@ class Ball {
     private int dy = 2;
 
 
-    public Ball(Component c){
+    public Ball(Component c, Color color, boolean fullRandomPosition){
         this.canvas = c;
+        this.color = color;
 
-
-        if(Math.random()<0.5){
+        if (fullRandomPosition)
+        {
             x = new Random().nextInt(this.canvas.getWidth());
-            y = 0;
-        }else{
-            x = 0;
             y = new Random().nextInt(this.canvas.getHeight());
         }
-    }
-
-    public static void f(){
-        int a = 0;
+        else
+        {
+            if(Math.random()<0.5){
+                x = new Random().nextInt(this.canvas.getWidth());
+                y = 0;
+            }else{
+                x = 0;
+                y = new Random().nextInt(this.canvas.getHeight());
+            }
+        }
     }
 
     public void draw (Graphics2D g2){
@@ -41,7 +46,7 @@ class Ball {
             XSIZE + 2 * borderSize,
             YSIZE + 2 * borderSize
         ));
-        g2.setColor(Color.green);
+        g2.setColor(color);
         g2.fill(new Ellipse2D.Double(x,y,XSIZE,YSIZE));
     }
 
