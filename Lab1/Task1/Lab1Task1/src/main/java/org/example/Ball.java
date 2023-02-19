@@ -32,9 +32,17 @@ class Ball {
     }
 
     public void draw (Graphics2D g2){
-        g2.setColor(Color.darkGray);
+        int borderSize = 3;
+        g2.setColor(Color.black);
+        g2.fill(new Ellipse2D.Double
+        (
+            x - borderSize,
+            y - borderSize,
+            XSIZE + 2 * borderSize,
+            YSIZE + 2 * borderSize
+        ));
+        g2.setColor(Color.green);
         g2.fill(new Ellipse2D.Double(x,y,XSIZE,YSIZE));
-
     }
 
     public void move(){
