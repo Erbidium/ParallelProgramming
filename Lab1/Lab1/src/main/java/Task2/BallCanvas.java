@@ -8,8 +8,18 @@ public class BallCanvas extends JPanel {
     public ArrayList<Ball> holes = new ArrayList<>();
     private ArrayList<Ball> balls = new ArrayList<>();
 
+    public ArrayList<Ball> getHoles()
+    {
+        return holes;
+    }
+
     public void add(Ball b){
         this.balls.add(b);
+    }
+
+    public synchronized void remove(Ball b)
+    {
+        this.balls.remove(b);
     }
     public void addHole()
     {

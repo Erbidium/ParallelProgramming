@@ -2,10 +2,13 @@ package Task2;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
 import java.util.Random;
 
+import static java.awt.geom.Point2D.*;
+
 class Ball {
-    private Component canvas;
+    private BallCanvas canvas;
     private Color color;
     private static final int XSIZE = 20;
     private static final int YSIZE = 20;
@@ -14,8 +17,15 @@ class Ball {
     private int dx = 2;
     private int dy = 2;
 
+    private static int borderSize = 3;
 
-    public Ball(Component c, Color color, boolean fullRandomPosition){
+
+    public Ball
+    (
+            BallCanvas c,
+            Color color,
+            boolean fullRandomPosition
+    ){
         this.canvas = c;
         this.color = color;
 
@@ -37,7 +47,6 @@ class Ball {
     }
 
     public void draw (Graphics2D g2){
-        int borderSize = 3;
         g2.setColor(Color.black);
         g2.fill(new Ellipse2D.Double
         (
@@ -70,5 +79,45 @@ class Ball {
             dy = -dy;
         }
         this.canvas.repaint();
+    }
+
+    public int getCenterX()
+    {
+        return x + XSIZE;
+    }
+
+    public int getCenterY()
+    {
+        return y + YSIZE;
+    }
+
+    public float getRadius()
+    {
+        return (float)Math.max(YSIZE, XSIZE) / 2;
+    }
+
+    public boolean getIsInHole()
+    {
+        var holes = canvas.getHoles();
+        for(Ball hole: holes)
+        {
+            if(intersect(hole, this))
+            {
+                canvas.remove(this);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean intersect(Ball ball1, Ball ball2)
+    {
+        return Point2D.distance
+        (
+            ball1.getCenterX(),
+            ball1.getCenterY(),
+            ball2.getCenterX(),
+            ball2.getCenterY()
+        ) <= ball1.getRadius() + ball2.getRadius();
     }
 }

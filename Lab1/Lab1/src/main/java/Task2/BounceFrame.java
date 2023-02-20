@@ -25,8 +25,10 @@ public class BounceFrame extends JFrame {
         JButton buttonStart = new JButton("Start");
         JButton buttonStop = new JButton("Stop");
 
+        JLabel labelCounter = new JLabel("In holes: 0");
+
         buttonStart.addActionListener(e -> {
-            for(int i = 0; i < 40000; i++)
+            for(int i = 0; i < 100; i++)
             {
                 Ball b = new Ball(canvas, Color.green, false);
                 canvas.add(b);
@@ -42,6 +44,7 @@ public class BounceFrame extends JFrame {
 
         buttonPanel.add(buttonStart);
         buttonPanel.add(buttonStop);
+        buttonPanel.add(labelCounter);
 
         content.add(buttonPanel, BorderLayout.SOUTH);
     }
