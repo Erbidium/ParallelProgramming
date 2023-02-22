@@ -3,10 +3,11 @@ package Task2;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BallCanvas extends JPanel {
     public ArrayList<Ball> holes = new ArrayList<>();
-    private ArrayList<Ball> balls = new ArrayList<>();
+    private CopyOnWriteArrayList<Ball> balls = new CopyOnWriteArrayList<>();
 
     public ArrayList<Ball> getHoles()
     {
