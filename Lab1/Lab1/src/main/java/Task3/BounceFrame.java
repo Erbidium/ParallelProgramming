@@ -17,7 +17,9 @@ public class BounceFrame extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.lightGray);
         JButton buttonRed = new JButton("Red");
+        JButton buttonBlue = new JButton("Blue");
         JButton buttonStop = new JButton("Stop");
+
         buttonRed.addActionListener(e -> {
             for(int i = 0; i < 100; i++)
             {
@@ -28,9 +30,22 @@ public class BounceFrame extends JFrame {
                 thread.start();
             }
         });
+
+        buttonBlue.addActionListener(e -> {
+            for(int i = 0; i < 100; i++)
+            {
+                Ball b = new Ball(canvas, Color.blue);
+                canvas.add(b);
+
+                BallThread thread = new BallThread(b);
+                thread.start();
+            }
+        });
+
         buttonStop.addActionListener(e -> System.exit(0));
 
         buttonPanel.add(buttonRed);
+        buttonPanel.add(buttonBlue);
         buttonPanel.add(buttonStop);
 
         content.add(buttonPanel, BorderLayout.SOUTH);

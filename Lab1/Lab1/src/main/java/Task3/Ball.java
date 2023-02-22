@@ -39,7 +39,7 @@ class Ball {
             XSIZE + 2 * borderSize,
             YSIZE + 2 * borderSize
         ));
-        g2.setColor(Color.green);
+        g2.setColor(color);
         g2.fill(new Ellipse2D.Double(x,y,XSIZE,YSIZE));
     }
 
