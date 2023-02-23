@@ -35,7 +35,7 @@ public class BounceFrame extends JFrame {
                 canvas.add(b);
 
                 BallThread thread = new BallThread(b);
-                thread.setPriority(8);
+                thread.setPriority(Thread.MAX_PRIORITY);
                 thread.start();
             }
 
@@ -47,7 +47,7 @@ public class BounceFrame extends JFrame {
                 canvas.add(b);
 
                 BallThread thread = new BallThread(b);
-                thread.setPriority(2);
+                thread.setPriority(Thread.MIN_PRIORITY);
                 thread.start();
             }
         });
