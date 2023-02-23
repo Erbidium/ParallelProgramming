@@ -16,20 +16,20 @@ public class BounceFrame extends JFrame {
         content.add(this.canvas, BorderLayout.CENTER);
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.lightGray);
-        JButton buttonRed = new JButton("Red");
-        JButton buttonBlue = new JButton("Blue");
+
+        JButton buttonStart = new JButton("Start");
         JButton buttonStop = new JButton("Stop");
 
-        JPanel experimentsPanel = new JPanel();
-        experimentsPanel.setBackground(Color.lightGray);
-        JButton experiment1 = new JButton(("1R 1B"));
-        JButton experiment2 = new JButton(("1R 10B"));
-        JButton experiment3 = new JButton(("1R 100B"));
-        JButton experiment4 = new JButton(("1R 1000B"));
-        JButton experiment5 = new JButton(("1R 3000B"));
+        JEditorPane redBallsNumberEditorPane = new JEditorPane();
+        JEditorPane blueBallsNumberEditorPane = new JEditorPane();
 
-        buttonRed.addActionListener(e -> {
-            for(int i = 0; i < 100; i++)
+        blueBallsNumberEditorPane.setText("0");
+        redBallsNumberEditorPane.setText("0");
+
+        buttonStart.addActionListener(e -> {
+            int redBallsNumber = Integer.parseInt(redBallsNumberEditorPane.getText());
+
+            for(int i = 0; i < redBallsNumber; i++)
             {
                 Ball b = new Ball(canvas, Color.red);
                 canvas.add(b);
@@ -38,49 +38,26 @@ public class BounceFrame extends JFrame {
                 thread.setPriority(8);
                 thread.start();
             }
-        });
 
-        buttonBlue.addActionListener(e -> {
-            for(int i = 0; i < 100; i++)
+            int blueBallsNumber = Integer.parseInt(blueBallsNumberEditorPane.getText());
+
+            for(int i = 0; i < blueBallsNumber; i++)
             {
                 Ball b = new Ball(canvas, Color.blue);
                 canvas.add(b);
 
                 BallThread thread = new BallThread(b);
-                thread.setPriority(4);
+                thread.setPriority(2);
                 thread.start();
             }
         });
-
         buttonStop.addActionListener(e -> System.exit(0));
 
-        experiment1.addActionListener(e -> {
-            Ball redBall = new Ball(canvas, Color.red);
-            canvas.add(redBall);
-
-            BallThread redBallThread = new BallThread(redBall);
-            redBallThread.setPriority(8);
-            redBallThread.start();
-
-            Ball blueBall = new Ball(canvas, Color.blue);
-            canvas.add(blueBall);
-
-            BallThread blueBallThread = new BallThread(redBall);
-            blueBallThread.setPriority(4);
-            blueBallThread.start();
-        });
-
-        buttonPanel.add(buttonRed);
-        buttonPanel.add(buttonBlue);
+        buttonPanel.add(buttonStart);
         buttonPanel.add(buttonStop);
-
-        experimentsPanel.add(experiment1);
-        experimentsPanel.add(experiment2);
-        experimentsPanel.add(experiment3);
-        experimentsPanel.add(experiment4);
-        experimentsPanel.add(experiment5);
+        buttonPanel.add(redBallsNumberEditorPane);
+        buttonPanel.add(blueBallsNumberEditorPane);
 
         content.add(buttonPanel, BorderLayout.SOUTH);
-        content.add(experimentsPanel, BorderLayout.NORTH);
     }
 }

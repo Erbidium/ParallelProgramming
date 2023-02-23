@@ -9,8 +9,8 @@ class Ball {
     private Color color;
     private static final int XSIZE = 20;
     private static final int YSIZE = 20;
-    private int x = 0;
-    private int y= 0;
+    private int x;
+    private int y;
     private int dx = 2;
     private int dy = 2;
 
@@ -20,13 +20,8 @@ class Ball {
         this.color = color;
 
 
-        if(Math.random()<0.5){
-            x = new Random().nextInt(this.canvas.getWidth());
-            y = 0;
-        }else{
-            x = 0;
-            y = new Random().nextInt(this.canvas.getHeight());
-        }
+        x = 50;
+        y = 50;
     }
 
     public void draw (Graphics2D g2){
