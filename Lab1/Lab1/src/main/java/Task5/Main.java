@@ -2,10 +2,12 @@ package Task5;
 
 public class Main {
     public static void main(String[] args) {
-        PrintThread firstThread = new PrintThread('-');
-        PrintThread secondThread = new PrintThread('|');
+        PrintThreadsSync printThreadsSync = new PrintThreadsSync();
+
+        PrintThread firstThread = new PrintThread('-', printThreadsSync, true);
+        PrintThread secondThread = new PrintThread('|', printThreadsSync, false);
 
         firstThread.start();
         secondThread.start();
-    }
+     }
 }

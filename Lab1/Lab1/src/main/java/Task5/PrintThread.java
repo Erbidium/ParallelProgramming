@@ -1,21 +1,29 @@
 package Task5;
 
 public class PrintThread extends Thread {
-    private char symbolToPrint;
+    private final char symbolToPrint;
+    private final PrintThreadsSync printThreadsSync;
+    private final boolean controlValue;
 
-    public PrintThread(char symbolToPrint){
+    public PrintThread
+    (
+        char symbolToPrint,
+        PrintThreadsSync printThreadsSync,
+        boolean controlValue
+    ){
         this.symbolToPrint = symbolToPrint;
+        this.printThreadsSync = printThreadsSync;
+        this.controlValue = controlValue;
     }
 
     @Override
     public void run(){
-        for(int i = 0; i < 1000; i++)
-        {
-            for(int j = 0; j < 100; j++)
-            {
-                System.out.print(symbolToPrint);
-            }
-            System.out.println();
-        }
+        do {
+            printThreadsSync.waitAndChange
+            (
+                symbolToPrint,
+                controlValue
+            );
+        } while (!printThreadsSync.getStop());
     }
 }
