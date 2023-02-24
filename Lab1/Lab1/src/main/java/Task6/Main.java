@@ -4,9 +4,12 @@ public class Main {
         Counter counter = new Counter();
         CounterSyncMethod counterSyncMethod = new CounterSyncMethod();
         CounterSyncBlock counterSyncBlock = new CounterSyncBlock();
+        CounterWithLock counterWithLock = new CounterWithLock();
+        
         RunCounterTest(counter, "Counter: ");
         RunCounterTest(counterSyncMethod, "Counter sync method: ");
         RunCounterTest(counterSyncBlock, "Counter sync block: ");
+        RunCounterTest(counterWithLock, "Counter with lock: ");
     }
 
     private static void RunCounterTest
