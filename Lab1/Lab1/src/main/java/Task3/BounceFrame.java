@@ -27,18 +27,6 @@ public class BounceFrame extends JFrame {
         redBallsNumberEditorPane.setText("0");
 
         buttonStart.addActionListener(e -> {
-            int redBallsNumber = Integer.parseInt(redBallsNumberEditorPane.getText());
-
-            for(int i = 0; i < redBallsNumber; i++)
-            {
-                Ball b = new Ball(canvas, Color.red);
-                canvas.add(b);
-
-                BallThread thread = new BallThread(b);
-                thread.setPriority(Thread.MAX_PRIORITY);
-                thread.start();
-            }
-
             int blueBallsNumber = Integer.parseInt(blueBallsNumberEditorPane.getText());
 
             for(int i = 0; i < blueBallsNumber; i++)
@@ -48,6 +36,18 @@ public class BounceFrame extends JFrame {
 
                 BallThread thread = new BallThread(b);
                 thread.setPriority(Thread.MIN_PRIORITY);
+                thread.start();
+            }
+
+            int redBallsNumber = Integer.parseInt(redBallsNumberEditorPane.getText());
+
+            for(int i = 0; i < redBallsNumber; i++)
+            {
+                Ball b = new Ball(canvas, Color.red);
+                canvas.add(b);
+
+                BallThread thread = new BallThread(b);
+                thread.setPriority(Thread.MAX_PRIORITY);
                 thread.start();
             }
         });
