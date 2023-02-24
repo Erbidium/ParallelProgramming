@@ -5,7 +5,7 @@ public class Main {
         CounterSyncMethod counterSyncMethod = new CounterSyncMethod();
         CounterSyncBlock counterSyncBlock = new CounterSyncBlock();
         CounterWithLock counterWithLock = new CounterWithLock();
-        
+
         RunCounterTest(counter, "Counter: ");
         RunCounterTest(counterSyncMethod, "Counter sync method: ");
         RunCounterTest(counterSyncBlock, "Counter sync block: ");

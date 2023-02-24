@@ -25,7 +25,7 @@ public class PrintThreadsSync {
         {
             System.out.println();
         }
-        if (numberOfPrintedSymbols == 100000)
+        if (numberOfPrintedSymbols == 10000)
         {
             stop = true;
         }

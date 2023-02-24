@@ -21,7 +21,7 @@ public class BounceFrame extends JFrame {
         JButton buttonStart = new JButton("Start");
         JButton buttonStop = new JButton("Stop");
         buttonStart.addActionListener(e -> {
-            for(int i = 0; i < 40000; i++)
+            for(int i = 0; i < 1000; i++)
             {
                 Ball b = new Ball(canvas);
                 canvas.add(b);
