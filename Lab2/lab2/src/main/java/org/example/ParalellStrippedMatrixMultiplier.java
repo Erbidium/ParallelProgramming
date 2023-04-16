@@ -41,7 +41,7 @@ public class ParalellStrippedMatrixMultiplier {
             tasks.clear();
 
             var lastIndex = columnIndices[matrixSize - 1];
-            for (int j = 0; j < matrixSize - 1; j++) {
+            for (int j = matrixSize - 2; j >= 0; j--) {
                 columnIndices[j + 1] = columnIndices[j];
             }
             columnIndices[0] = lastIndex;
