@@ -1,6 +1,6 @@
 package org.example;
 
-public class SequentialMatrixMultiplicator {
+public class SequentialMatrixMultiplier {
     public float[][] Multiply(float[][] matrixA, float[][] matrixB) {
         int rows = matrixA.length;
         int columns = matrixB[0].length;

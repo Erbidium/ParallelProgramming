@@ -3,12 +3,12 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
         var matrixGenerator = new MatrixGenerator();
-        var sequentialMatrixMultiplicator = new SequentialMatrixMultiplicator();
+        var sequentialMatrixMultiplier = new SequentialMatrixMultiplier();
 
         var matrixA = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
         var matrixB = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
 
-        var result = sequentialMatrixMultiplicator.Multiply(matrixA, matrixB);
+        var result = sequentialMatrixMultiplier.Multiply(matrixA, matrixB);
 
         for (float[] row : result) {
             for (int j = 0; j < result[0].length; j++) {
