@@ -11,14 +11,14 @@ public class Main {
         var matrixB = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
 
         var striped = new ParalellStrippedMatrixMultiplier();
-        striped.Multiply(matrixA, matrixB);
-        /*var result = sequentialMatrixMultiplier.Multiply(matrixA, matrixB);
+        var result = striped.Multiply(matrixA, matrixB);
+        //var result = sequentialMatrixMultiplier.Multiply(matrixA, matrixB);
 
         for (float[] row : result) {
             for (int j = 0; j < result[0].length; j++) {
                 System.out.print(row[j] + " ");
             }
             System.out.println();
-        }*/
+        }
     }
 }

@@ -9,22 +9,44 @@ public class ParalellStrippedMatrixMultiplier {
     public float[][] Multiply(float[][] matrixA, float[][] matrixB) throws InterruptedException, ExecutionException {
         var matrixBColumns = MatrixFunctions.GetTransposed(matrixB);
 
+        int matrixSize = matrixA.length;
+
+        var rowIndices = new int[matrixSize];
+        var columnIndices = new int[matrixSize];
+
+        for (int i = 0; i < matrixSize; i++)
+        {
+            rowIndices[i] = i;
+            columnIndices[i] = i;
+        }
+
         ExecutorService executor = Executors.newFixedThreadPool(4);
 
         ArrayList<StrippedTask> tasks = new ArrayList<>();
 
-        float matrixSize = matrixA.length;
+        float[][] resultMatrix = new float[matrixSize][matrixSize];
 
         for (int i = 0; i < matrixSize; i++)
         {
-            tasks.add(new StrippedTask(matrixA[i], matrixBColumns[i]));
+            for (int j = 0; j < matrixSize; j++) {
+                tasks.add(new StrippedTask(matrixA[rowIndices[j]], matrixBColumns[columnIndices[j]]));
+            }
+
+            var calculatedElements = executor.invokeAll(tasks);
+
+            for (int j = 0; j < matrixSize; j++) {
+                resultMatrix[rowIndices[j]][columnIndices[j]] = calculatedElements.get(j).get();
+            }
+
+            tasks.clear();
+
+            var lastIndex = columnIndices[matrixSize - 1];
+            for (int j = 0; j < matrixSize - 1; j++) {
+                columnIndices[j + 1] = columnIndices[j];
+            }
+            columnIndices[0] = lastIndex;
         }
 
-        var calculatedElements = executor.invokeAll(tasks);
-        for (var element: calculatedElements) {
-            System.out.print(element.get() + " ");
-        }
-
-        return new float[2][2];
+        return resultMatrix;
     }
 }
