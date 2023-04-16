@@ -1,7 +1,7 @@
 package org.example;
 
 public class MatrixFunctions {
-    public float[][] GetTransposed(float [][] matrix)
+    public static float[][] GetTransposed(float [][] matrix)
     {
         var rows = matrix.length;
         var columns = matrix[0].length;
