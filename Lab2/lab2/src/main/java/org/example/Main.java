@@ -4,22 +4,14 @@ import java.util.concurrent.ExecutionException;
 
 public class Main {
     public static void main(String[] args) {
-        var sequentialMatrixMultiplier = new SequentialMatrixMultiplier();
-
-        var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(100, 1);
-        var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(100, 1);
-
-        //var stripped = new ParallelStrippedMatrixMultiplier(4);
-        var stripped = new ParallelFoxMatrixMultiplier(4);
-        var result = stripped.Multiply(matrixA, matrixB);
-        var matrix = result.getMatrix();
-        //var result = sequentialMatrixMultiplier.Multiply(matrixA, matrixB);
-
-        for (float[] row : matrix) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                System.out.print(row[j] + " ");
-            }
-            System.out.println();
+        var foxMultiplier = new SequentialMatrixMultiplier();
+        var matrixSizes = new int[] { 500, 1000, 1500, 2000, 2500 };
+        var threadsCount = new int[] { 4, 8 };
+        var foxBenchmark = new MatricesMultiplicationBenchmark(foxMultiplier, matrixSizes, threadsCount, 4);
+        try {
+            MatrixPrinter.Print(foxBenchmark.Run());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
