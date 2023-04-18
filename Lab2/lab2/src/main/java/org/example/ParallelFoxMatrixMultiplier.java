@@ -1,7 +1,10 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier {
     private int threadsNumber;
@@ -24,6 +27,10 @@ public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier {
         float[][][][] matrixAOrderedBlocks = new float[blockNumber][blockNumber][][];
         float[][][][] matrixBOrderedBlocks = new float[blockNumber][blockNumber][][];
 
+        ArrayList<FoxTask> tasks = new ArrayList<>();
+
+        List<Future<Float[][]>> calculatedSubBlocks;
+
         ExecutorService executor = Executors.newFixedThreadPool(threadsNumber);
 
         var result = new Result(matrixSize);
@@ -36,8 +43,17 @@ public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier {
                 {
                     matrixAOrderedBlocks[i][j] = matrixABlocks[i][(i + k) % blockNumber];
                     matrixBOrderedBlocks[i][j] = matrixBBlocks[(i + k) % blockNumber][j];
+                    tasks.add(new FoxTask(matrixAOrderedBlocks[i][j], matrixBOrderedBlocks[i][j]));
                 }
             }
+
+            try {
+                calculatedSubBlocks = executor.invokeAll(tasks);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+
         }
 
         executor.shutdown();
