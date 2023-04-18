@@ -61,4 +61,24 @@ public class MatrixFunctions {
 
         return result;
     }
+
+    public static boolean MatricesEqual(float[][] matrixA, float[][] matrixB)
+    {
+        if (matrixA.length != matrixB.length || matrixA[0].length != matrixB[0].length)
+            return false;
+
+        var rows = matrixA.length;
+        var columns = matrixA[0].length;
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (matrixA[i][j] != matrixB[i][j])
+                    return false;
+            }
+        }
+
+        return true;
+    }
 }
