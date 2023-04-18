@@ -59,7 +59,7 @@ public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier {
                 for (int j = 0; j < blockNumber; j++)
                 {
                     try {
-                        result.AddSubMatrix(calculatedSubBlocks.get(i * blockSize + j).get() , i, j);
+                        result.AddSubMatrix(calculatedSubBlocks.get(i * blockNumber + j).get() , i * blockSize, j * blockSize);
                     } catch (InterruptedException | ExecutionException e) {
                         throw new RuntimeException(e);
                     }
