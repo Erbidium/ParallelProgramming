@@ -7,12 +7,27 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier {
+public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier, IThreadsMultiplier {
     private int threadsNumber;
 
     public ParallelFoxMatrixMultiplier(int threadsNumber)
     {
         this.threadsNumber = threadsNumber;
+    }
+
+    public ParallelFoxMatrixMultiplier()
+    {
+        this.threadsNumber = 4;
+    }
+
+    @Override
+    public int getThreads() {
+        return threadsNumber;
+    }
+
+    @Override
+    public void setThreads(int threads) {
+        threadsNumber = threads;
     }
 
     @Override
