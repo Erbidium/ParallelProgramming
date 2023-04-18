@@ -20,4 +20,15 @@ public class Result {
     {
         matrix[row][column] += cellValue;
     }
+
+    public void AddSubMatrix(Float[][] subMatrix, int row, int column)
+    {
+        for (int i = 0; i < subMatrix.length; i++)
+        {
+            for (int j = 0; j < subMatrix[0].length; j++)
+            {
+                matrix[row + i][column + j] += subMatrix[i][j];
+            }
+        }
+    }
 }
