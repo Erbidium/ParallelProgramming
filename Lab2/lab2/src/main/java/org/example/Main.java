@@ -4,11 +4,10 @@ import java.util.concurrent.ExecutionException;
 
 public class Main {
     public static void main(String[] args) {
-        var matrixGenerator = new MatrixGenerator();
         var sequentialMatrixMultiplier = new SequentialMatrixMultiplier();
 
-        var matrixA = matrixGenerator.GenerateMatrixFilledWithValue(100, 1);
-        var matrixB = matrixGenerator.GenerateMatrixFilledWithValue(100, 1);
+        var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(100, 1);
+        var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(100, 1);
 
         //var stripped = new ParallelStrippedMatrixMultiplier(4);
         var stripped = new ParallelFoxMatrixMultiplier(4);

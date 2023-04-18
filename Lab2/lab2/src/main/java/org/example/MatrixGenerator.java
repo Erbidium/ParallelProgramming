@@ -3,7 +3,7 @@ package org.example;
 import java.util.Random;
 
 public class MatrixGenerator {
-    public float[][] GenerateMatrixFilledWithValue(int matrixSize, float value)
+    public static float[][] GenerateMatrixFilledWithValue(int matrixSize, float value)
     {
         var matrix = new float[matrixSize][matrixSize];
         for (int i = 0; i < matrixSize; i++)
@@ -17,7 +17,7 @@ public class MatrixGenerator {
         return matrix;
     }
 
-    public float[][] GenerateRandomMatrix(int matrixSize, float value)
+    public static float[][] GenerateRandomMatrix(int matrixSize)
     {
         var random = new Random();
         var matrix = new float[matrixSize][matrixSize];
