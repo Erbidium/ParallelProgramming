@@ -40,7 +40,7 @@ public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
                 tasks.add(new StrippedTask(matrixA[j], matrixBColumns[columnIndices[j]]));
             }
 
-            List<Future<Float>> calculatedElements = null;
+            List<Future<Float>> calculatedElements;
             try {
                 calculatedElements = executor.invokeAll(tasks);
             } catch (InterruptedException e) {
