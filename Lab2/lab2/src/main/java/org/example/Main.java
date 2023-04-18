@@ -10,12 +10,13 @@ public class Main {
         var matrixA = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
         var matrixB = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
 
-        var stripped = new ParalellStrippedMatrixMultiplier();
+        var stripped = new ParallelStrippedMatrixMultiplier();
         var result = stripped.Multiply(matrixA, matrixB);
+        var matrix = result.getMatrix();
         //var result = sequentialMatrixMultiplier.Multiply(matrixA, matrixB);
 
-        for (float[] row : result) {
-            for (int j = 0; j < result[0].length; j++) {
+        for (float[] row : matrix) {
+            for (int j = 0; j < matrix[0].length; j++) {
                 System.out.print(row[j] + " ");
             }
             System.out.println();

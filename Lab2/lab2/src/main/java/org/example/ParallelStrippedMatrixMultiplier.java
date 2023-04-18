@@ -1,12 +1,14 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-public class ParalellStrippedMatrixMultiplier {
-    public float[][] Multiply(float[][] matrixA, float[][] matrixB) throws InterruptedException, ExecutionException {
+public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
+    public Result Multiply(float[][] matrixA, float[][] matrixB) {
         var matrixBColumns = MatrixFunctions.GetTransposed(matrixB);
 
         int matrixSize = matrixA.length;
@@ -32,10 +34,19 @@ public class ParalellStrippedMatrixMultiplier {
                 tasks.add(new StrippedTask(matrixA[rowIndices[j]], matrixBColumns[columnIndices[j]]));
             }
 
-            var calculatedElements = executor.invokeAll(tasks);
+            List<Future<Float>> calculatedElements = null;
+            try {
+                calculatedElements = executor.invokeAll(tasks);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             for (int j = 0; j < matrixSize; j++) {
-                result.WriteValueToCell(calculatedElements.get(j).get(), rowIndices[j], columnIndices[j]);
+                try {
+                    result.WriteValueToCell(calculatedElements.get(j).get(), rowIndices[j], columnIndices[j]);
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             tasks.clear();
@@ -47,6 +58,6 @@ public class ParalellStrippedMatrixMultiplier {
             columnIndices[0] = lastIndex;
         }
 
-        return result.getMatrix();
+        return result;
     }
 }

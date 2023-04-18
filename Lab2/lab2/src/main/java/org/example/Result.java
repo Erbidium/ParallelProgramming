@@ -15,4 +15,9 @@ public class Result {
     {
         matrix[row][column] = cellValue;
     }
+
+    public void AddValueToCell(float cellValue, int row, int column)
+    {
+        matrix[row][column] += cellValue;
+    }
 }
