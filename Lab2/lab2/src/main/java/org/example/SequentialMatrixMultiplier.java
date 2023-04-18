@@ -1,6 +1,7 @@
 package org.example;
 
 public class SequentialMatrixMultiplier implements IMatrixMultiplier {
+    @Override
     public Result Multiply(float[][] matrixA, float[][] matrixB) {
         int matrixSize = matrixA.length;
 

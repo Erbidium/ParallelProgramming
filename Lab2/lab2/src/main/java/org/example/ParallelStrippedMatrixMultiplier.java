@@ -15,6 +15,7 @@ public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
         this.threadsNumber = threadsNumber;
     }
 
+    @Override
     public Result Multiply(float[][] matrixA, float[][] matrixB) {
         var matrixBColumns = MatrixFunctions.GetTransposed(matrixB);
 
