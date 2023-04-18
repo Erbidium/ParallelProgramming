@@ -3,14 +3,14 @@ package org.example;
 import java.util.concurrent.ExecutionException;
 
 public class Main {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) {
         var matrixGenerator = new MatrixGenerator();
         var sequentialMatrixMultiplier = new SequentialMatrixMultiplier();
 
         var matrixA = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
         var matrixB = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
 
-        var stripped = new ParallelStrippedMatrixMultiplier();
+        var stripped = new ParallelStrippedMatrixMultiplier(4);
         var result = stripped.Multiply(matrixA, matrixB);
         var matrix = result.getMatrix();
         //var result = sequentialMatrixMultiplier.Multiply(matrixA, matrixB);

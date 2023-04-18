@@ -8,6 +8,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
+    private int threadsNumber;
+
+    public ParallelStrippedMatrixMultiplier(int threadsNumber)
+    {
+        this.threadsNumber = threadsNumber;
+    }
+
     public Result Multiply(float[][] matrixA, float[][] matrixB) {
         var matrixBColumns = MatrixFunctions.GetTransposed(matrixB);
 
@@ -20,7 +27,7 @@ public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
             columnIndices[i] = i;
         }
 
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+        ExecutorService executor = Executors.newFixedThreadPool(threadsNumber);
 
         ArrayList<StrippedTask> tasks = new ArrayList<>();
 
