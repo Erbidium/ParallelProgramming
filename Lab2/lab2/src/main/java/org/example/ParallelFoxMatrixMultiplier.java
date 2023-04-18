@@ -15,10 +15,23 @@ public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier {
     public Result Multiply(float[][] matrixA, float[][] matrixB) {
         int matrixSize = matrixA.length;
 
-        int blocksSize = 10;
-        int processesNumber = (int)Math.pow(matrixSize / (float)blocksSize, 2);
+        int blockSize = 10;
+        var blockNumber = matrixSize / blockSize;
 
-        var blocks = MatrixFunctions.SplitMatrixOnBlocks(matrixA, blocksSize);
+        var matrixABlocks = MatrixFunctions.SplitMatrixOnBlocks(matrixA, blockSize);
+        var matrixBBlocks = MatrixFunctions.SplitMatrixOnBlocks(matrixB, blockSize);
+
+        float[][][][] matrixAOrderedBlocks = new float[blockNumber][blockNumber][][];
+        float[][][][] matrixBOrderedBlocks = new float[blockNumber][blockNumber][][];
+
+        for (int i = 0; i < blockNumber; i++)
+        {
+            for (int j = 0; j < blockNumber; j++)
+            {
+                matrixAOrderedBlocks[i][j] = matrixABlocks[i][i];
+                matrixBOrderedBlocks[i][j] = matrixBBlocks[i][j];
+            }
+        }
 
         ExecutorService executor = Executors.newFixedThreadPool(threadsNumber);
 
