@@ -24,7 +24,7 @@ public class ParalellStrippedMatrixMultiplier {
 
         ArrayList<StrippedTask> tasks = new ArrayList<>();
 
-        float[][] resultMatrix = new float[matrixSize][matrixSize];
+        var result = new Result(matrixSize);
 
         for (int i = 0; i < matrixSize; i++)
         {
@@ -35,7 +35,7 @@ public class ParalellStrippedMatrixMultiplier {
             var calculatedElements = executor.invokeAll(tasks);
 
             for (int j = 0; j < matrixSize; j++) {
-                resultMatrix[rowIndices[j]][columnIndices[j]] = calculatedElements.get(j).get();
+                result.WriteValueToCell(calculatedElements.get(j).get(), rowIndices[j], columnIndices[j]);
             }
 
             tasks.clear();
@@ -47,6 +47,6 @@ public class ParalellStrippedMatrixMultiplier {
             columnIndices[0] = lastIndex;
         }
 
-        return resultMatrix;
+        return result.getMatrix();
     }
 }

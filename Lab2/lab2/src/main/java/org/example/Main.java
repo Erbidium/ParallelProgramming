@@ -10,8 +10,8 @@ public class Main {
         var matrixA = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
         var matrixB = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
 
-        var striped = new ParalellStrippedMatrixMultiplier();
-        var result = striped.Multiply(matrixA, matrixB);
+        var stripped = new ParalellStrippedMatrixMultiplier();
+        var result = stripped.Multiply(matrixA, matrixB);
         //var result = sequentialMatrixMultiplier.Multiply(matrixA, matrixB);
 
         for (float[] row : result) {
