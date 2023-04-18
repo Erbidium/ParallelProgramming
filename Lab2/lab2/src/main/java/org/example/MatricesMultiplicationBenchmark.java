@@ -51,7 +51,7 @@ public class MatricesMultiplicationBenchmark {
                     var sequentialMultiplier = new SequentialMatrixMultiplier();
                     var sequentialMultipliedResult = sequentialMultiplier.Multiply(matrixA, matrixB);
 
-                    if (MatrixFunctions.MatricesEqual(parallelMultipliedResult.getMatrix(), sequentialMultipliedResult.getMatrix()))
+                    if (!MatrixFunctions.MatricesEqual(parallelMultipliedResult.getMatrix(), sequentialMultipliedResult.getMatrix()))
                     {
                         throw new Exception("Parallel algorithm wrong computations result");
                     }
