@@ -7,6 +7,11 @@ public class Result {
         matrix = new float[matrixSize][matrixSize];
     }
 
+    public Result(float[][] matrix)
+    {
+        this.matrix = matrix;
+    }
+
     public float[][] getMatrix() {
         return matrix;
     }
@@ -21,7 +26,7 @@ public class Result {
         matrix[row][column] += cellValue;
     }
 
-    public void AddSubMatrix(Float[][] subMatrix, int row, int column)
+    public void AddSubMatrix(float[][] subMatrix, int row, int column)
     {
         for (int i = 0; i < subMatrix.length; i++)
         {

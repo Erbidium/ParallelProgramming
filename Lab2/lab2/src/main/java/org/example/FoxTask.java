@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.concurrent.Callable;
 
-public class FoxTask implements Callable<Float[][]>  {
+public class FoxTask implements Callable<float[][]>  {
     private float[][] firstBlock;
 
     private float[][] secondBlock;
@@ -14,7 +14,7 @@ public class FoxTask implements Callable<Float[][]>  {
     }
 
     @Override
-    public Float[][] call() {
-        return null;
+    public float[][] call() {
+        return MatrixFunctions.Multiply(this.firstBlock, this.secondBlock);
     }
 }

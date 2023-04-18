@@ -30,7 +30,7 @@ public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier {
 
         ArrayList<FoxTask> tasks = new ArrayList<>();
 
-        List<Future<Float[][]>> calculatedSubBlocks;
+        List<Future<float[][]>> calculatedSubBlocks;
 
         ExecutorService executor = Executors.newFixedThreadPool(threadsNumber);
 
