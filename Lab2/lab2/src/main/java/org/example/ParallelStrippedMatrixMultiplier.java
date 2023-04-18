@@ -13,12 +13,10 @@ public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
 
         int matrixSize = matrixA.length;
 
-        var rowIndices = new int[matrixSize];
         var columnIndices = new int[matrixSize];
 
         for (int i = 0; i < matrixSize; i++)
         {
-            rowIndices[i] = i;
             columnIndices[i] = i;
         }
 
@@ -31,7 +29,7 @@ public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
         for (int i = 0; i < matrixSize; i++)
         {
             for (int j = 0; j < matrixSize; j++) {
-                tasks.add(new StrippedTask(matrixA[rowIndices[j]], matrixBColumns[columnIndices[j]]));
+                tasks.add(new StrippedTask(matrixA[j], matrixBColumns[columnIndices[j]]));
             }
 
             List<Future<Float>> calculatedElements = null;
@@ -43,7 +41,7 @@ public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
 
             for (int j = 0; j < matrixSize; j++) {
                 try {
-                    result.WriteValueToCell(calculatedElements.get(j).get(), rowIndices[j], columnIndices[j]);
+                    result.WriteValueToCell(calculatedElements.get(j).get(), j, columnIndices[j]);
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
