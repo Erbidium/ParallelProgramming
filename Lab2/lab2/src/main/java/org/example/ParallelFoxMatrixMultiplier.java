@@ -65,6 +65,7 @@ public class ParallelFoxMatrixMultiplier implements IThreadsMultiplier {
 
             try {
                 calculatedSubBlocks = executor.invokeAll(tasks);
+                tasks.clear();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
