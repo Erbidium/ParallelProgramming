@@ -7,10 +7,11 @@ public class Main {
         var matrixGenerator = new MatrixGenerator();
         var sequentialMatrixMultiplier = new SequentialMatrixMultiplier();
 
-        var matrixA = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
-        var matrixB = matrixGenerator.GenerateMatrixFilledWithValue(10, 1);
+        var matrixA = matrixGenerator.GenerateMatrixFilledWithValue(100, 1);
+        var matrixB = matrixGenerator.GenerateMatrixFilledWithValue(100, 1);
 
-        var stripped = new ParallelStrippedMatrixMultiplier(4);
+        //var stripped = new ParallelStrippedMatrixMultiplier(4);
+        var stripped = new ParallelFoxMatrixMultiplier(4);
         var result = stripped.Multiply(matrixA, matrixB);
         var matrix = result.getMatrix();
         //var result = sequentialMatrixMultiplier.Multiply(matrixA, matrixB);

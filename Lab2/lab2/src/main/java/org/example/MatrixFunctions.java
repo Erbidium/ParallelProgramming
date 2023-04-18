@@ -18,4 +18,31 @@ public class MatrixFunctions {
 
         return transposedMatrix;
     }
+
+    public static float[][][][] SplitMatrixOnBlocks(float[][] matrix, int blockSize)
+    {
+        int matrixSize = matrix.length;
+
+        var blockNumber = matrixSize / blockSize;
+
+        var subMatrices = new float[blockNumber][blockNumber][][];
+
+        for (int i = 0; i < blockNumber; i++)
+        {
+            for (int j = 0; j < blockNumber; j++)
+            {
+                float[][] subMatrix = new float[blockSize][blockSize];
+                for (int k = 0; k < blockSize; k++)
+                {
+                    var subMatrixRow = new float[blockSize];
+                    System.arraycopy(matrix[i * blockSize], j * blockSize, subMatrixRow, 0, blockSize);
+                    subMatrix[k] = subMatrixRow;
+                }
+
+                subMatrices[i][j] = subMatrix;
+            }
+        }
+
+        return subMatrices;
+    }
 }
