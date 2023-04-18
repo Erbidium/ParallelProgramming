@@ -24,18 +24,21 @@ public class ParallelFoxMatrixMultiplier implements IMatrixMultiplier {
         float[][][][] matrixAOrderedBlocks = new float[blockNumber][blockNumber][][];
         float[][][][] matrixBOrderedBlocks = new float[blockNumber][blockNumber][][];
 
-        for (int i = 0; i < blockNumber; i++)
-        {
-            for (int j = 0; j < blockNumber; j++)
-            {
-                matrixAOrderedBlocks[i][j] = matrixABlocks[i][i];
-                matrixBOrderedBlocks[i][j] = matrixBBlocks[i][j];
-            }
-        }
-
         ExecutorService executor = Executors.newFixedThreadPool(threadsNumber);
 
         var result = new Result(matrixSize);
+
+        for (int k = 0; k < blockNumber; k++)
+        {
+            for (int i = 0; i < blockNumber; i++)
+            {
+                for (int j = 0; j < blockNumber; j++)
+                {
+                    matrixAOrderedBlocks[i][j] = matrixABlocks[i][(i + k) % blockNumber];
+                    matrixBOrderedBlocks[i][j] = matrixBBlocks[(i + k) % blockNumber][j];
+                }
+            }
+        }
 
         executor.shutdown();
 
