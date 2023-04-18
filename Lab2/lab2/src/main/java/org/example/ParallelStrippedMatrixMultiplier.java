@@ -63,6 +63,8 @@ public class ParallelStrippedMatrixMultiplier implements IMatrixMultiplier {
             columnIndices[0] = lastIndex;
         }
 
+        executor.shutdown();
+
         return result;
     }
 }
