@@ -21,8 +21,8 @@ public class MatricesMultiplicationBenchmark {
         this.attemptsCount = attemptsCount;
     }
 
-    public float[][] Run() throws Exception {
-        var benchmarkResult = new float[matrixSizes.length][threadsCount.length];
+    public int[][] Run() throws Exception {
+        var benchmarkResult = new int[matrixSizes.length][threadsCount.length];
 
         for (int i = 0; i < matrixSizes.length; i++)
         {
@@ -36,7 +36,9 @@ public class MatricesMultiplicationBenchmark {
                     ((IThreadsMultiplier) matrixMultiplier).setThreads(threadsCount[j]);
                 }
 
-                float attemptsSum = 0;
+                int attemptsSum = 0;
+
+                int sequentialSum = 0;
 
                 for (int k = 0; k < attemptsCount; k++)
                 {
@@ -49,7 +51,12 @@ public class MatricesMultiplicationBenchmark {
                     attemptsSum += executionTime;
 
                     var sequentialMultiplier = new SequentialMatrixMultiplier();
+
+                    var startSequentialTime = System.currentTimeMillis();
                     var sequentialMultipliedResult = sequentialMultiplier.Multiply(matrixA, matrixB);
+                    var endSequentialTime = System.currentTimeMillis();
+
+                    sequentialSum += endSequentialTime - startSequentialTime;
 
                     if (!MatrixFunctions.MatricesEqual(parallelMultipliedResult.getMatrix(), sequentialMultipliedResult.getMatrix()))
                     {
@@ -58,6 +65,10 @@ public class MatricesMultiplicationBenchmark {
                 }
 
                 var finalExecutionTime = attemptsSum / attemptsCount;
+
+                System.out.println("parallel " + finalExecutionTime);
+
+                System.out.println("sequential " + sequentialSum / attemptsCount);
 
                 benchmarkResult[i][j] = finalExecutionTime;
             }

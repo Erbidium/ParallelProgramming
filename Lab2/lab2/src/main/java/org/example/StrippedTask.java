@@ -2,19 +2,19 @@ package org.example;
 
 import java.util.concurrent.Callable;
 
-public class StrippedTask implements Callable<Float> {
-    private float[] row;
+public class StrippedTask implements Callable<Integer> {
+    private int[] row;
 
-    private float[] column;
-    public StrippedTask(float[] row, float[] column)
+    private int[] column;
+    public StrippedTask(int[] row, int[] column)
     {
         this.row = row;
         this.column = column;
     }
 
     @Override
-    public Float call() {
-        float result = 0;
+    public Integer call() {
+        int result = 0;
         for (int i = 0; i < row.length; i++)
         {
             result += row[i] * column[i];

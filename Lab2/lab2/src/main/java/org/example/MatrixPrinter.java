@@ -1,9 +1,9 @@
 package org.example;
 
 public class MatrixPrinter {
-    public static void Print(float[][] matrix)
+    public static void Print(int[][] matrix)
     {
-        for (float[] row : matrix) {
+        for (int[] row : matrix) {
             for (int j = 0; j < matrix[0].length; j++) {
                 System.out.print(row[j] + " ");
             }

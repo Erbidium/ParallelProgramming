@@ -1,5 +1,5 @@
 package org.example;
 
 public interface IMatrixMultiplier {
-    public Result Multiply(float[][] matrixA, float[][] matrixB);
+    public Result Multiply(int[][] matrixA, int[][] matrixB);
 }

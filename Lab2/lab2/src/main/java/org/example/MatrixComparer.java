@@ -1,7 +1,7 @@
 package org.example;
 
 public class MatrixComparer {
-    public boolean MatricesAreEqual(float [][] matrixA, float [][] matrixB)
+    public boolean MatricesAreEqual(int [][] matrixA, int [][] matrixB)
     {
         if (matrixA.length != matrixB.length || matrixA[0].length != matrixB[0].length) {
             return false;

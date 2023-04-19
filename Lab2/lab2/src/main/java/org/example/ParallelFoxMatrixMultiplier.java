@@ -31,21 +31,21 @@ public class ParallelFoxMatrixMultiplier implements IThreadsMultiplier {
     }
 
     @Override
-    public Result Multiply(float[][] matrixA, float[][] matrixB) {
+    public Result Multiply(int[][] matrixA, int[][] matrixB) {
         int matrixSize = matrixA.length;
 
-        int blockSize = 10;
+        int blockSize = 100;
         var blockNumber = matrixSize / blockSize;
 
         var matrixABlocks = MatrixFunctions.SplitMatrixOnBlocks(matrixA, blockSize);
         var matrixBBlocks = MatrixFunctions.SplitMatrixOnBlocks(matrixB, blockSize);
 
-        float[][][][] matrixAOrderedBlocks = new float[blockNumber][blockNumber][][];
-        float[][][][] matrixBOrderedBlocks = new float[blockNumber][blockNumber][][];
+        int[][][][] matrixAOrderedBlocks = new int[blockNumber][blockNumber][][];
+        int[][][][] matrixBOrderedBlocks = new int[blockNumber][blockNumber][][];
 
         ArrayList<FoxTask> tasks = new ArrayList<>();
 
-        List<Future<float[][]>> calculatedSubBlocks;
+        List<Future<int[][]>> calculatedSubBlocks;
 
         ExecutorService executor = Executors.newFixedThreadPool(threadsNumber);
 

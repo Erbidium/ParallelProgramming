@@ -1,32 +1,32 @@
 package org.example;
 
 public class Result {
-    private float[][] matrix;
+    private int[][] matrix;
     public Result(int matrixSize)
     {
-        matrix = new float[matrixSize][matrixSize];
+        matrix = new int[matrixSize][matrixSize];
     }
 
-    public Result(float[][] matrix)
+    public Result(int[][] matrix)
     {
         this.matrix = matrix;
     }
 
-    public float[][] getMatrix() {
+    public int[][] getMatrix() {
         return matrix;
     }
 
-    public void WriteValueToCell(float cellValue, int row, int column)
+    public void WriteValueToCell(int cellValue, int row, int column)
     {
         matrix[row][column] = cellValue;
     }
 
-    public void AddValueToCell(float cellValue, int row, int column)
+    public void AddValueToCell(int cellValue, int row, int column)
     {
         matrix[row][column] += cellValue;
     }
 
-    public void AddSubMatrix(float[][] subMatrix, int row, int column)
+    public void AddSubMatrix(int[][] subMatrix, int row, int column)
     {
         for (int i = 0; i < subMatrix.length; i++)
         {

@@ -1,12 +1,12 @@
 package org.example;
 
 public class MatrixFunctions {
-    public static float[][] GetTransposed(float [][] matrix)
+    public static int[][] GetTransposed(int [][] matrix)
     {
         var rows = matrix.length;
         var columns = matrix[0].length;
 
-        var transposedMatrix = new float[columns][rows];
+        var transposedMatrix = new int[columns][rows];
 
         for(int i = 0; i < rows; i++)
         {
@@ -19,23 +19,23 @@ public class MatrixFunctions {
         return transposedMatrix;
     }
 
-    public static float[][][][] SplitMatrixOnBlocks(float[][] matrix, int blockSize)
+    public static int[][][][] SplitMatrixOnBlocks(int[][] matrix, int blockSize)
     {
         int matrixSize = matrix.length;
 
         var blockNumber = matrixSize / blockSize;
 
-        var subMatrices = new float[blockNumber][blockNumber][][];
+        var subMatrices = new int[blockNumber][blockNumber][][];
 
         for (int i = 0; i < blockNumber; i++)
         {
             for (int j = 0; j < blockNumber; j++)
             {
-                float[][] subMatrix = new float[blockSize][blockSize];
+                int[][] subMatrix = new int[blockSize][blockSize];
                 for (int k = 0; k < blockSize; k++)
                 {
-                    var subMatrixRow = new float[blockSize];
-                    System.arraycopy(matrix[i * blockSize], j * blockSize, subMatrixRow, 0, blockSize);
+                    var subMatrixRow = new int[blockSize];
+                    System.arraycopy(matrix[i * blockSize + k], j * blockSize, subMatrixRow, 0, blockSize);
                     subMatrix[k] = subMatrixRow;
                 }
 
@@ -46,10 +46,10 @@ public class MatrixFunctions {
         return subMatrices;
     }
 
-    public static float[][] Multiply(float[][] matrixA, float[][] matrixB) {
+    public static int[][] Multiply(int[][] matrixA, int[][] matrixB) {
         int matrixSize = matrixA.length;
 
-        var result = new float[matrixSize][matrixSize];
+        var result = new int[matrixSize][matrixSize];
 
         for (int i = 0; i < matrixA.length; i++) {
             for (int j = 0; j < matrixB[0].length; j++) {
@@ -62,7 +62,7 @@ public class MatrixFunctions {
         return result;
     }
 
-    public static boolean MatricesEqual(float[][] matrixA, float[][] matrixB)
+    public static boolean MatricesEqual(int[][] matrixA, int[][] matrixB)
     {
         if (matrixA.length != matrixB.length || matrixA[0].length != matrixB[0].length)
             return false;

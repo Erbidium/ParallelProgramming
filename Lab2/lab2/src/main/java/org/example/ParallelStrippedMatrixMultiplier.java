@@ -31,7 +31,7 @@ public class ParallelStrippedMatrixMultiplier implements IThreadsMultiplier {
     }
 
     @Override
-    public Result Multiply(float[][] matrixA, float[][] matrixB) {
+    public Result Multiply(int[][] matrixA, int[][] matrixB) {
         var matrixBColumns = MatrixFunctions.GetTransposed(matrixB);
 
         int matrixSize = matrixA.length;
@@ -55,7 +55,7 @@ public class ParallelStrippedMatrixMultiplier implements IThreadsMultiplier {
                 tasks.add(new StrippedTask(matrixA[j], matrixBColumns[columnIndices[j]]));
             }
 
-            List<Future<Float>> calculatedElements;
+            List<Future<Integer>> calculatedElements;
             try {
                 calculatedElements = executor.invokeAll(tasks);
             } catch (InterruptedException e) {

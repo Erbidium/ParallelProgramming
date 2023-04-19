@@ -3,9 +3,9 @@ package org.example;
 import java.util.Random;
 
 public class MatrixGenerator {
-    public static float[][] GenerateMatrixFilledWithValue(int matrixSize, float value)
+    public static int[][] GenerateMatrixFilledWithValue(int matrixSize, int value)
     {
-        var matrix = new float[matrixSize][matrixSize];
+        var matrix = new int[matrixSize][matrixSize];
         for (int i = 0; i < matrixSize; i++)
         {
             for (int j = 0; j < matrixSize; j++)
@@ -17,15 +17,15 @@ public class MatrixGenerator {
         return matrix;
     }
 
-    public static float[][] GenerateRandomMatrix(int matrixSize)
+    public static int[][] GenerateRandomMatrix(int matrixSize)
     {
         var random = new Random();
-        var matrix = new float[matrixSize][matrixSize];
+        var matrix = new int[matrixSize][matrixSize];
         for (int i = 0; i < matrixSize; i++)
         {
             for (int j = 0; j < matrixSize; j++)
             {
-                matrix[i][j] = random.nextFloat();
+                matrix[i][j] = random.nextInt();
             }
         }
 
