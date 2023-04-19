@@ -66,7 +66,7 @@ public class MatricesMultiplicationBenchmark {
 
                 var finalExecutionTime = attemptsSum / attemptsCount;
 
-                System.out.println("parallel " + finalExecutionTime);
+                System.out.println("parallel " + finalExecutionTime + " matrix size " + matrixSizes[i] + " threads count " + threadsCount[j]);
 
                 System.out.println("sequential " + sequentialSum / attemptsCount);
 
