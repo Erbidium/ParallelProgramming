@@ -11,5 +11,12 @@ public class Main {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        /*
+        var matrixA = MatrixGenerator.GenerateRandomMatrix(100);
+        var matrixB = MatrixGenerator.GenerateRandomMatrix(100);
+        var result = foxMultiplier.Multiply(matrixA, matrixB);
+        MatrixPrinter.Print(result.getMatrix());
+         */
     }
 }
