@@ -5,15 +5,18 @@ import java.util.Random;
 public class TeacherThread extends Thread {
     private Journal journal;
 
-    public TeacherThread(Journal journal)
+    private int weeksNumber;
+
+    public TeacherThread(Journal journal, int weeksNumber)
     {
         this.journal = journal;
+        this.weeksNumber = weeksNumber;
     }
 
     @Override
     public void run()
     {
-        while (true)
+        for (int i = 0; i < weeksNumber; i++)
         {
             var random = new Random();
 

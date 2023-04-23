@@ -7,16 +7,19 @@ public class AssistantThread extends Thread {
 
     private Group group;
 
-    public AssistantThread(Journal journal, Group group)
+    private int weeksNumber;
+
+    public AssistantThread(Journal journal, Group group, int weeksNumber)
     {
         this.journal = journal;
         this.group = group;
+        this.weeksNumber = weeksNumber;
     }
 
     @Override
     public void run()
     {
-        while (true)
+        for (int i = 0; i < weeksNumber; i++)
         {
             var random = new Random();
 
