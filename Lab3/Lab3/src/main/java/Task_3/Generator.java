@@ -17,4 +17,29 @@ public class Generator {
 
         return groups;
     }
+
+    public ArrayList<Student> GenerateStudents(ArrayList<Group> groups, int studentsNumberInGroup)
+    {
+        var students = new ArrayList<Student>();
+
+        for (var group: groups) {
+
+            var studentName = "name";
+            var studentSurname = "surname";
+
+            for (int i = 0; i < studentsNumberInGroup; i++)
+            {
+                var student = new Student
+                (
+                    studentName + (i + 1),
+                    studentSurname + (i + 1),
+                    group
+                );
+
+                students.add(student);
+            }
+        }
+
+        return students;
+    }
 }
