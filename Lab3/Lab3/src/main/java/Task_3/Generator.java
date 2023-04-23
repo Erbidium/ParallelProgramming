@@ -3,7 +3,7 @@ package Task_3;
 import java.util.ArrayList;
 
 public class Generator {
-    public ArrayList<Group> GenerateGroups(int groupsNumber)
+    public static ArrayList<Group> GenerateGroups(int groupsNumber)
     {
         var groups = new ArrayList<Group>();
 
@@ -18,7 +18,7 @@ public class Generator {
         return groups;
     }
 
-    public ArrayList<Student> GenerateStudents(ArrayList<Group> groups, int studentsNumberInGroup)
+    public static ArrayList<Student> GenerateStudents(ArrayList<Group> groups, int studentsNumberInGroup)
     {
         var students = new ArrayList<Student>();
 
