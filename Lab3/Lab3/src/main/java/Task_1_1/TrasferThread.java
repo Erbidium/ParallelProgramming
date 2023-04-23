@@ -1,4 +1,4 @@
-package org.example;
+package Task_1_1;
 
 class TransferThread extends Thread {
     private Bank bank;

@@ -1,4 +1,4 @@
-package org.example;
+package Task_1_1;
 
 class Bank {
     public static final int NTEST = 10000;
@@ -13,7 +13,7 @@ class Bank {
         ntransacts = 0;
     }
 
-    public void transfer(int from, int to, int amount) {
+    public synchronized void transfer(int from, int to, int amount) {
         accounts[from] -= amount;
         accounts[to] += amount;
         ntransacts++;
