@@ -5,10 +5,13 @@ public class Student {
 
     private String surname;
 
-    Student(String name, String surname)
+    private Group group;
+
+    Student(String name, String surname, Group group)
     {
         this.name = name;
         this.surname = surname;
+        this.group = group;
     }
 
     public String getName() {
