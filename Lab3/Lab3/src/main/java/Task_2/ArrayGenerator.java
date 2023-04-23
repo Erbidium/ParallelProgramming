@@ -5,7 +5,6 @@ import java.util.Random;
 public class ArrayGenerator {
     public static int[] GenerateConsecutiveArray(int arraySize)
     {
-        var random = new Random();
         var array = new int[arraySize];
         for (int i = 0; i < arraySize; i++)
         {

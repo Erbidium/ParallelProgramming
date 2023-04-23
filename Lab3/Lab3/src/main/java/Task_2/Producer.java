@@ -5,17 +5,14 @@ import java.util.Random;
 public class Producer implements Runnable {
     private Drop drop;
 
-    public Producer(Drop drop) {
+    private int[] importantInfo;
+
+    public Producer(Drop drop, int[] importantInfo) {
         this.drop = drop;
+        this.importantInfo = importantInfo;
     }
 
     public void run() {
-        String importantInfo[] = {
-                "Mares eat oats",
-                "Does eat oats",
-                "Little lambs eat ivy",
-                "A kid will eat ivy too"
-        };
         Random random = new Random();
 
         for (int i = 0;
@@ -23,9 +20,9 @@ public class Producer implements Runnable {
              i++) {
             drop.put(importantInfo[i]);
             try {
-                Thread.sleep(random.nextInt(5000));
+                Thread.sleep(random.nextInt(10));
             } catch (InterruptedException e) {}
         }
-        drop.put("DONE");
+        drop.put(-1);
     }
 }
