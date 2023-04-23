@@ -21,4 +21,8 @@ public class Student {
     public String getSurname() {
         return surname;
     }
+
+    public Group getGroup() {
+        return group;
+    }
 }
