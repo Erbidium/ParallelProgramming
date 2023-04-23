@@ -1,6 +1,8 @@
 package Task_3;
 
-public class AssistantThread {
+import java.util.Random;
+
+public class AssistantThread extends Thread {
     private Journal journal;
 
     private Group group;
@@ -14,6 +16,14 @@ public class AssistantThread {
     @Override
     public void run()
     {
+        while (true)
+        {
+            var random = new Random();
 
+            var students = journal.getStudentsOfGroup(group);
+            for (var student: students) {
+                journal.AddStudentGrade(student, random.nextInt(100));
+            }
+        }
     }
 }
