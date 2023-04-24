@@ -25,7 +25,7 @@ public class AssistantThread extends Thread {
 
             var students = journal.getStudentsOfGroup(group);
             for (var student: students) {
-                journal.AddStudentGrade(student, random.nextInt(100));
+                journal.AddStudentGrade(student, random.nextInt(60, 100));
             }
         }
     }
