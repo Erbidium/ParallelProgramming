@@ -13,8 +13,9 @@ public class Drop {
     final Condition notFull  = lock.newCondition();
     final Condition notEmpty = lock.newCondition();
 
-    final int[] items;
-    int currentItemsCount;
+    private final int[] items;
+
+    private int putPtr, takePtr, count;
 
     public Drop(int bufferSize)
     {
@@ -24,14 +25,18 @@ public class Drop {
     public void put(int value) {
         lock.lock();
         try {
-            while (currentItemsCount == items.length) {
+            while (count == items.length) {
                 notFull.await();
             }
 
-            items[currentItemsCount++] = value;
-            producedMessagesCount++;
+            items[putPtr] = value;
+            if (++putPtr == items.length)
+                putPtr = 0;
 
-            notEmpty.signalAll();
+            ++count;
+            ++producedMessagesCount;
+
+            notEmpty.signal();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
@@ -42,15 +47,18 @@ public class Drop {
     public int take() {
         lock.lock();
         try {
-            while (currentItemsCount == 0) {
+            while (count == 0) {
                 notEmpty.await();
             }
 
-            int value = items[--currentItemsCount];
-            consumedMessagesCount++;
+            int value = items[takePtr];
+            if (++takePtr == items.length)
+                takePtr = 0;
 
-            notFull.signalAll();
+            --count;
+            ++consumedMessagesCount;
 
+            notFull.signal();
             return value;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
