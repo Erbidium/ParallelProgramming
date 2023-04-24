@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Journal {
     private Map<Group, Map<Student, ArrayList<Integer>>> gradesMap;
 
-    private int gradesCount;
+    private AtomicInteger gradesCount;
 
     private ArrayList<Student> students;
 
@@ -21,7 +22,8 @@ public class Journal {
 
     private void InitJournal(ArrayList<Student> students)
     {
-        gradesCount = 0;
+        gradesCount = new AtomicInteger();
+        gradesCount.set(0);
 
         gradesMap = new HashMap<>();
 
@@ -41,7 +43,7 @@ public class Journal {
     }
 
     public int getGradesCount() {
-        return gradesCount;
+        return gradesCount.get();
     }
 
     public Map<Group, Map<Student, ArrayList<Integer>>> getGradesMap() {
@@ -60,7 +62,7 @@ public class Journal {
 
         synchronized (studentGrades)
         {
-            gradesCount++;
+            gradesCount.incrementAndGet();
             studentGrades.add(grade);
         }
     }
