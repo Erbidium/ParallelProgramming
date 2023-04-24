@@ -42,6 +42,18 @@ public class JournalTask {
         }
 
         System.out.println("Grades count: " + journal.getGradesCount());
-        System.out.println("Journal: " + journal.getGradesMap());
+
+        var gradesMap = journal.getGradesMap();
+
+        for (var group: gradesMap.keySet()) {
+            System.out.println("Group: " + group.getName());
+
+            var groupStudents = gradesMap.get(group);
+
+            for (var student: groupStudents.keySet()) {
+                System.out.println("Student: " + student.getName() + " " + student.getSurname());
+                System.out.println("Grades: " + groupStudents.get(student));
+            }
+        }
     }
 }
