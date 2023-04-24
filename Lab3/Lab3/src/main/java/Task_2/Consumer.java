@@ -1,7 +1,5 @@
 package Task_2;
 
-import java.util.Random;
-
 public class Consumer implements Runnable {
     private Drop drop;
 

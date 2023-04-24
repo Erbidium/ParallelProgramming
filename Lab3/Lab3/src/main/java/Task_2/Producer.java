@@ -14,10 +14,10 @@ public class Producer implements Runnable {
     }
 
     public void run() {
-        for (int i = 0; i < importantInfo.length; i++) {
-            drop.put(importantInfo[i]);
+        for (int message : importantInfo) {
+            drop.put(message);
 
-            System.out.format("MESSAGE SENT: %s%n", importantInfo[i]);
+            System.out.format("MESSAGE SENT: %s%n", message);
         }
         drop.put(-1);
     }
