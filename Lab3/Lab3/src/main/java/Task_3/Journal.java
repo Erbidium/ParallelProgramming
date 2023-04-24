@@ -8,6 +8,8 @@ import java.util.Set;
 public class Journal {
     private Map<Group, Map<Student, ArrayList<Integer>>> gradesMap;
 
+    private int gradesCount;
+
     private ArrayList<Student> students;
 
     public Journal(ArrayList<Student> students)
@@ -19,6 +21,8 @@ public class Journal {
 
     private void InitJournal(ArrayList<Student> students)
     {
+        gradesCount = 0;
+
         gradesMap = new HashMap<>();
 
         for (var student: students) {
@@ -36,6 +40,14 @@ public class Journal {
         return students;
     }
 
+    public int getGradesCount() {
+        return gradesCount;
+    }
+
+    public Map<Group, Map<Student, ArrayList<Integer>>> getGradesMap() {
+        return gradesMap;
+    }
+
     public Set<Student> getStudentsOfGroup(Group group) {
         return gradesMap.get(group).keySet();
     }
@@ -48,6 +60,7 @@ public class Journal {
 
         synchronized (studentGrades)
         {
+            gradesCount++;
             studentGrades.add(grade);
         }
     }
