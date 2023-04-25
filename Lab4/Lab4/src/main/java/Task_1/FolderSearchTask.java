@@ -31,7 +31,7 @@ class FolderSearchTask extends RecursiveTask<HashMap<Integer, Integer>> {
             task.fork();
         }
 
-        for (RecursiveTask<HashMap<Integer, Integer>> task : forks) {
+        for (var task : forks) {
             var taskFrequencies = task.join();
 
             taskFrequencies.forEach((key, value) ->
