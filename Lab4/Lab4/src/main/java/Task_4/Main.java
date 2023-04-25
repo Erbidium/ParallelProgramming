@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Folder folder = Folder.fromDirectory(new File("D:/TextFolder"));
 
-        var keywords = new HashSet<String>(Arrays.asList("project", "book", "light"));
+        var keywords = new HashSet<>(Arrays.asList("project", "book", "light"));
         keywords.add("project");
 
         var parallelKeyWordsSearchTask = new ParallelKeyWordsSearchTask();
