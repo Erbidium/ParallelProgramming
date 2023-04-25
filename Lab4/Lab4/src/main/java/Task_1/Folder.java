@@ -1,4 +1,4 @@
-package org.example;
+package Task_1;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,8 +1,6 @@
-package org.example;
+package Task_1;
 
 import java.util.HashMap;
-
-import static org.example.FrequenciesCounter.calculateFrequenciesOfWorldLengths;
 
 public class SingleThreadedFrequenciesSearchTask implements IFrequenciesSearchTask {
     @Override
@@ -16,7 +14,7 @@ public class SingleThreadedFrequenciesSearchTask implements IFrequenciesSearchTa
                     frequenciesOfWordLengths.merge(key, value, Integer::sum));
         }
         for (Document document : folder.getDocuments()) {
-            var documentFrequencies = calculateFrequenciesOfWorldLengths(document);
+            var documentFrequencies = FrequenciesCounter.calculateFrequenciesOfWorldLengths(document);
 
             documentFrequencies.forEach((key, value) ->
                     frequenciesOfWordLengths.merge(key, value, Integer::sum));

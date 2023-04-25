@@ -1,7 +1,6 @@
-package org.example;
+package Task_1;
 
 import java.util.HashMap;
-import java.util.concurrent.ForkJoinPool;
 
 public class FrequenciesCounter {
 
