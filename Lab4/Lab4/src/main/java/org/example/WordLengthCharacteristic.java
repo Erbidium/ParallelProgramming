@@ -34,9 +34,13 @@ public class WordLengthCharacteristic {
     {
         double sum = 0;
         int totalWordsCount = 0;
+
         for (Map.Entry<Integer,Integer> el: frequenciesOfWordLengths.entrySet()) {
-            sum += (el.getKey() * el.getValue());
-            totalWordsCount +=el.getValue();
+            var key = el.getKey();
+            var value = el.getValue();
+
+            sum += key * value;
+            totalWordsCount += value;
         }
 
         return sum / totalWordsCount;
@@ -44,6 +48,16 @@ public class WordLengthCharacteristic {
 
     private static double calculateVariance(HashMap <Integer, Integer> frequenciesOfWordLengths, double mean)
     {
+        double sum = 0;
+        int totalWordsCount = 0;
+        for (Map.Entry<Integer,Integer> el: frequenciesOfWordLengths.entrySet()) {
+            var key = el.getKey();
+            var value = el.getValue();
 
+            sum += Math.pow(key, 2) * value;
+            totalWordsCount += value;
+        }
+
+        return sum / totalWordsCount - Math.pow(mean, 2);
     }
 }
