@@ -2,10 +2,10 @@ package Task_2;
 
 public class Main {
     public static void main(String[] args) {
-        var threadPoolFoxMatrixMultiplier = new ThreadPoolFoxMatrixMultiplier();
+        var threadPoolFoxMatrixMultiplier = new ForkJoinFoxMatrixMultiplier();
 
-        var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(3000, 1);
-        var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(3000, 1);
+        var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(1600, 1);
+        var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(1600, 1);
 
         var startTime = System.currentTimeMillis();
 
