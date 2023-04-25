@@ -2,7 +2,7 @@ package Task_2;
 
 public class Main {
     public static void main(String[] args) {
-        var matrixMultiplier = new ParallelFoxMatrixMultiplier();
+        var matrixMultiplier = new ThreadPoolFoxMatrixMultiplier();
 
         var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(100, 1);
         var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(100, 1);
