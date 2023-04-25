@@ -24,7 +24,7 @@ public class Main {
 
         for (int i = 0; i < repeatCount; i++) {
             startTime = System.currentTimeMillis();
-            counts = wordCounter.countOccurrencesOnSingleThread(			  				folder,searchedWord)
+            counts = wordCounter.countOccurrencesOnSingleThread(folder,searchedWord);
             stopTime = System.currentTimeMillis();
             averTime+=stopTime - startTime;
         }
