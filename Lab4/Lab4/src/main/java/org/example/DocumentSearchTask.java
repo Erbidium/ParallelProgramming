@@ -1,19 +1,18 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.concurrent.RecursiveTask;
 
-class DocumentSearchTask extends RecursiveTask<Long> {
+class DocumentSearchTask extends RecursiveTask<HashMap<Integer, Integer>> {
     private final Document document;
-    private final String searchedWord;
 
-    DocumentSearchTask(Document document, String searchedWord) {
+    DocumentSearchTask(Document document) {
         super();
         this.document = document;
-        this.searchedWord = searchedWord;
     }
 
     @Override
-    protected Long compute() {
-        return WordCounter.occurrencesCount(document, searchedWord);
+    protected HashMap<Integer, Integer> compute() {
+        return FrequenciesCounter.calculateFrequenciesOfWorldLengths(document);
     }
 }

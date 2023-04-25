@@ -1,36 +1,43 @@
 package org.example;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
-class FolderSearchTask extends RecursiveTask<Long> {
+class FolderSearchTask extends RecursiveTask<HashMap<Integer, Integer>> {
     private final Folder folder;
-    private final String searchedWord;
 
-    FolderSearchTask(Folder folder, String searchedWord) {
+    FolderSearchTask(Folder folder) {
         super();
         this.folder = folder;
-        this.searchedWord = searchedWord;
     }
 
     @Override
-    protected Long compute() {
-        long count = 0L;
-        List<RecursiveTask<Long>> forks = new LinkedList<>();
+    protected HashMap<Integer, Integer> compute() {
+        var frequenciesOfWordLengths = new HashMap<Integer, Integer>();
+
+        List<RecursiveTask<HashMap<Integer, Integer>>> forks = new LinkedList<>();
+
         for (Folder subFolder : folder.getSubFolders()) {
-            FolderSearchTask task = new FolderSearchTask(subFolder, searchedWord);
+            FolderSearchTask task = new FolderSearchTask(subFolder);
             forks.add(task);
             task.fork();
         }
+
         for (Document document : folder.getDocuments()) {
-            DocumentSearchTask task = new DocumentSearchTask(document, searchedWord);
+            DocumentSearchTask task = new DocumentSearchTask(document);
             forks.add(task);
             task.fork();
         }
-        for (RecursiveTask<Long> task : forks) {
-            count = count + task.join();
+
+        for (RecursiveTask<HashMap<Integer, Integer>> task : forks) {
+            var taskFrequencies = task.join();
+
+            taskFrequencies.forEach((key, value) ->
+                    frequenciesOfWordLengths.merge(key, value, Integer::sum));
         }
-        return count;
+
+        return frequenciesOfWordLengths;
     }
 }
