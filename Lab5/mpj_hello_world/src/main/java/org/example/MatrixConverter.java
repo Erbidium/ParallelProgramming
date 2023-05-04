@@ -11,13 +11,13 @@ public class MatrixConverter {
                 .toArray();
     }
 
-    public static int[][] ConvertToMatrix(int[] array, int matrixSize)
+    public static int[][] ConvertToMatrix(int[] array, int rows, int columns)
     {
-        var matrix = new int[matrixSize][matrixSize];
+        var matrix = new int[rows][columns];
 
-        for (int i = 0; i < matrixSize; i++)
+        for (int i = 0; i < rows; i++)
         {
-            System.arraycopy(array, i * matrixSize, matrix[i], 0, matrixSize);
+            System.arraycopy(array, i * columns, matrix[i], 0, columns);
         }
 
         return matrix;
