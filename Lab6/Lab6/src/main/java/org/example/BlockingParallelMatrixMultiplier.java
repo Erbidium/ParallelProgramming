@@ -29,8 +29,6 @@ public class BlockingParallelMatrixMultiplier {
             var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
             var c = new int[matrixSize][matrixSize];
 
-            //System.out.printf("mpi_mm has started with %d tasks.\n", numtasks);
-
             var startTime = MPI.Wtime();
 
             averow = matrixSize / workersNumber;
@@ -39,7 +37,7 @@ public class BlockingParallelMatrixMultiplier {
             int offset = 0;
             for (destination = 1; destination <= workersNumber; destination++) {
                 int rows = (destination <= extra) ? averow + 1 : averow;
-                //System.out.printf("Sending %d rows to task %d offset= %d\n", rows,dest,offset);
+
                 MPI.COMM_WORLD.Send(new int[] { offset }, 0, 1, MPI.INT, destination, FROM_MASTER);
                 MPI.COMM_WORLD.Send(new int[] { rows }, 0, 1, MPI.INT, destination, FROM_MASTER);
 
@@ -62,19 +60,17 @@ public class BlockingParallelMatrixMultiplier {
                 MPI.COMM_WORLD.Recv(calculatedSubMatrixC, 0, rowsBuffer[0], MPI.OBJECT, source, FROM_WORKER);
 
                 MatrixFunctions.AddSubMatrix(c, calculatedSubMatrixC, offsetBuffer[0]);
-
-                //System.out.printf("Received results from task %d\n", source);
             }
 
             var endTime = MPI.Wtime();
 
             //System.out.println(endTime - startTime);
 
-            //System.out.println("****\n");
-            //System.out.println("Result Matrix:\n");
+            System.out.println("****\n");
+            System.out.println("Result Matrix:\n");
             MatrixPrinter.Print(c);
-            //System.out.println("\n********\n");
-            //System.out.println("Done.\n");
+            System.out.println("\n********\n");
+            System.out.println("Done.\n");
         }
         else {
             var offset = new int[1];
@@ -82,9 +78,6 @@ public class BlockingParallelMatrixMultiplier {
 
             MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, MASTER, FROM_MASTER);
             MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, MASTER, FROM_MASTER);
-
-            //System.out.println("Received rows: " + rows[0]);
-            //System.out.println("Received offset: " + offset[0]);
 
             var workerMatrixAPart = new int[rows[0]][];
             var workerMatrixB = new int[matrixSize][];
