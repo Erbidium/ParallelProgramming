@@ -4,7 +4,7 @@ import mpi.MPI;
 
 import static java.lang.System.exit;
 
-public class Main {
+public class BlockingParallelMatrixMultiplier {
     public static void main(String[] args) {
         int MASTER = 0;
         int FROM_MASTER = 1;
