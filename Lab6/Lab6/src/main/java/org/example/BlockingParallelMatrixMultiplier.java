@@ -10,20 +10,20 @@ public class BlockingParallelMatrixMultiplier {
         int FROM_MASTER = 1;
         int FROM_WORKER = 2;
 
-        int numworkers, source, dest, averow, extra;
+        int workersNumber, source, destination, averow, extra;
 
         int matrixSize = 2000;
 
         MPI.Init(args);
-        int numtasks = MPI.COMM_WORLD.Size();
+        int tasksNumber = MPI.COMM_WORLD.Size();
         int rank = MPI.COMM_WORLD.Rank();
 
-        if (numtasks < 2 ) {
+        if (tasksNumber < 2 ) {
             System.out.println("Need at least two MPI tasks. Quitting...\n");
             MPI.COMM_WORLD.Abort(1);
             exit(1);
         }
-        numworkers = numtasks - 1;
+        workersNumber = tasksNumber - 1;
         if (rank == MASTER) {
             var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
             var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
@@ -33,20 +33,20 @@ public class BlockingParallelMatrixMultiplier {
 
             var startTime = MPI.Wtime();
 
-            averow = matrixSize / numworkers;
-            extra = matrixSize % numworkers;
+            averow = matrixSize / workersNumber;
+            extra = matrixSize % workersNumber;
 
             int offset = 0;
-            for (dest = 1; dest <= numworkers; dest++) {
-                int rows = (dest <= extra) ? averow + 1 : averow;
+            for (destination = 1; destination <= workersNumber; destination++) {
+                int rows = (destination <= extra) ? averow + 1 : averow;
                 //System.out.printf("Sending %d rows to task %d offset= %d\n", rows,dest,offset);
-                MPI.COMM_WORLD.Send(new int[] { offset }, 0, 1, MPI.INT, dest, FROM_MASTER);
-                MPI.COMM_WORLD.Send(new int[] { rows }, 0, 1, MPI.INT, dest, FROM_MASTER);
+                MPI.COMM_WORLD.Send(new int[] { offset }, 0, 1, MPI.INT, destination, FROM_MASTER);
+                MPI.COMM_WORLD.Send(new int[] { rows }, 0, 1, MPI.INT, destination, FROM_MASTER);
 
                 var subMatrixA = MatrixFunctions.GetSubMatrix(offset, rows, matrixA);
 
-                MPI.COMM_WORLD.Send(subMatrixA, 0, rows, MPI.OBJECT, dest, FROM_MASTER);
-                MPI.COMM_WORLD.Send(matrixB, 0, matrixSize, MPI.OBJECT, dest, FROM_MASTER);
+                MPI.COMM_WORLD.Send(subMatrixA, 0, rows, MPI.OBJECT, destination, FROM_MASTER);
+                MPI.COMM_WORLD.Send(matrixB, 0, matrixSize, MPI.OBJECT, destination, FROM_MASTER);
 
                 offset += rows;
             }
@@ -54,7 +54,7 @@ public class BlockingParallelMatrixMultiplier {
             var offsetBuffer = new int[1];
             var rowsBuffer = new int[1];
 
-            for (source = 1; source <= numworkers; source++) {
+            for (source = 1; source <= workersNumber; source++) {
                 MPI.COMM_WORLD.Recv(offsetBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
                 MPI.COMM_WORLD.Recv(rowsBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
 
