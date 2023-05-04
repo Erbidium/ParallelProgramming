@@ -36,11 +36,9 @@ public class Main {
 
             var matrixBBuffer = MatrixConverter.ConvertToSingleDimensional(b);
 
+            int offset = 0;
             for (dest = 1; dest <= numworkers; dest++) {
-                int offset = 0;
-                int rows = 0;
-
-                rows = (dest <= extra) ? averow + 1 : averow;
+                int rows = (dest <= extra) ? averow + 1 : averow;
                 System.out.printf("Sending %d rows to task %d offset= %d\n", rows,dest,offset);
                 MPI.COMM_WORLD.Send(new int[] { offset }, 0, 1, MPI.INT, dest, FROM_MASTER);
                 MPI.COMM_WORLD.Send(new int[] { rows }, 0, 1, MPI.INT, dest, FROM_MASTER);
@@ -78,6 +76,9 @@ public class Main {
 
             MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, MASTER, FROM_MASTER);
             MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, MASTER, FROM_MASTER);
+
+            System.out.println("Received rows: " + rows[0]);
+            System.out.println("Received offset: " + offset[0]);
 
             var matrixABuffer = new int[rows[0] * matrixSize];
             var matrixBBuffer = new int[matrixSize * matrixSize];
