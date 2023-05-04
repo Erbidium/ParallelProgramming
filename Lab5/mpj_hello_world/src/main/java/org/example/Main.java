@@ -48,7 +48,7 @@ public class Main {
 
                 MPI.COMM_WORLD.Send(subMatrixABuffer, 0, rows * matrixSize, MPI.INT, dest, FROM_MASTER);
                 MPI.COMM_WORLD.Send(matrixBBuffer, 0, matrixSize * matrixSize, MPI.INT, dest, FROM_MASTER);
-                offset+= rows;
+                offset += rows;
             }
 
             var offsetBuffer = new int[1];
@@ -58,7 +58,7 @@ public class Main {
                 MPI.COMM_WORLD.Recv(offsetBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
                 MPI.COMM_WORLD.Recv(rowsBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
 
-                var calculatedSubMatrixCBuffer = new int[rowsBuffer[0]][matrixSize];
+                var calculatedSubMatrixCBuffer = new int[rowsBuffer[0] * matrixSize];
 
                 MPI.COMM_WORLD.Recv(calculatedSubMatrixCBuffer, 0, rowsBuffer[0] * matrixSize, MPI.INT, source, FROM_WORKER);
                 System.out.printf("Received results from task %d\n", source);
