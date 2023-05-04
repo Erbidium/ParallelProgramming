@@ -12,7 +12,7 @@ public class Main {
 
         int numworkers, source, dest, averow, extra;
 
-        int matrixSize = 10;
+        int matrixSize = 2000;
 
         MPI.Init(args);
         int numtasks = MPI.COMM_WORLD.Size();
@@ -29,7 +29,9 @@ public class Main {
             var b = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
             var c = new int[matrixSize][matrixSize];
 
-            System.out.printf("mpi_mm has started with %d tasks.\n", numtasks);
+            //System.out.printf("mpi_mm has started with %d tasks.\n", numtasks);
+
+            var startTime = MPI.Wtime();
 
             averow = matrixSize / numworkers;
             extra = matrixSize % numworkers;
@@ -39,7 +41,7 @@ public class Main {
             int offset = 0;
             for (dest = 1; dest <= numworkers; dest++) {
                 int rows = (dest <= extra) ? averow + 1 : averow;
-                System.out.printf("Sending %d rows to task %d offset= %d\n", rows,dest,offset);
+                //System.out.printf("Sending %d rows to task %d offset= %d\n", rows,dest,offset);
                 MPI.COMM_WORLD.Send(new int[] { offset }, 0, 1, MPI.INT, dest, FROM_MASTER);
                 MPI.COMM_WORLD.Send(new int[] { rows }, 0, 1, MPI.INT, dest, FROM_MASTER);
 
@@ -64,14 +66,18 @@ public class Main {
                 var calculatedSubMatrixC = MatrixConverter.ConvertToMatrix(calculatedSubMatrixCBuffer, rowsBuffer[0], matrixSize);
                 MatrixFunctions.AddSubMatrix(c, calculatedSubMatrixC, offsetBuffer[0]);
 
-                System.out.printf("Received results from task %d\n", source);
+                //System.out.printf("Received results from task %d\n", source);
             }
 
-            System.out.println("****\n");
-            System.out.println("Result Matrix:\n");
-            MatrixPrinter.Print(c);
-            System.out.println("\n********\n");
-            System.out.println("Done.\n");
+            var endTime = MPI.Wtime();
+
+            System.out.println(endTime - startTime);
+
+            //System.out.println("****\n");
+            //System.out.println("Result Matrix:\n");
+            //MatrixPrinter.Print(c);
+            //System.out.println("\n********\n");
+            //System.out.println("Done.\n");
         }
         else {
             var offset = new int[1];
@@ -80,8 +86,8 @@ public class Main {
             MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, MASTER, FROM_MASTER);
             MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, MASTER, FROM_MASTER);
 
-            System.out.println("Received rows: " + rows[0]);
-            System.out.println("Received offset: " + offset[0]);
+            //System.out.println("Received rows: " + rows[0]);
+            //System.out.println("Received offset: " + offset[0]);
 
             var matrixABuffer = new int[rows[0] * matrixSize];
             var matrixBBuffer = new int[matrixSize * matrixSize];
