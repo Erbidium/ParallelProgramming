@@ -25,4 +25,15 @@ public class MatrixFunctions {
 
         return subMatrix;
     }
+
+    public static void AddSubMatrix(int[][]  matrix, int[][] subMatrix, int offset)
+    {
+        for (int i = 0; i < subMatrix.length; i++)
+        {
+            for (int j = 0; j < subMatrix[0].length; j++)
+            {
+                matrix[offset + i][j] += subMatrix[i][j];
+            }
+        }
+    }
 }

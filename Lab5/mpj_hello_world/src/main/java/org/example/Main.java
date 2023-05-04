@@ -59,8 +59,11 @@ public class Main {
                 MPI.COMM_WORLD.Recv(rowsBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
 
                 var calculatedSubMatrixCBuffer = new int[rowsBuffer[0] * matrixSize];
-
                 MPI.COMM_WORLD.Recv(calculatedSubMatrixCBuffer, 0, rowsBuffer[0] * matrixSize, MPI.INT, source, FROM_WORKER);
+
+                var calculatedSubMatrixC = MatrixConverter.ConvertToMatrix(calculatedSubMatrixCBuffer, rowsBuffer[0], matrixSize);
+                MatrixFunctions.AddSubMatrix(c, calculatedSubMatrixC, offsetBuffer[0]);
+
                 System.out.printf("Received results from task %d\n", source);
             }
 
