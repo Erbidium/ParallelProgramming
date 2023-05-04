@@ -33,12 +33,13 @@ public class Main {
 
             averow = matrixSize / numworkers;
             extra = matrixSize % numworkers;
-            int offset = 0;
-            int rows = 0;
 
             var matrixBBuffer = MatrixConverter.ConvertToSingleDimensional(b);
 
             for (dest = 1; dest <= numworkers; dest++) {
+                int offset = 0;
+                int rows = 0;
+
                 rows = (dest <= extra) ? averow + 1 : averow;
                 System.out.printf("Sending %d rows to task %d offset= %d\n", rows,dest,offset);
                 MPI.COMM_WORLD.Send(new int[] { offset }, 0, 1, MPI.INT, dest, FROM_MASTER);
@@ -52,13 +53,16 @@ public class Main {
                 offset+= rows;
             }
 
+            var offsetBuffer = new int[1];
+            var rowsBuffer = new int[1];
+
             for (source = 1; source <= numworkers; source++) {
-                MPI.COMM_WORLD.Recv(offset, 0, 1, MPI.INT, source, FROM_WORKER);
-                MPI.COMM_WORLD.Recv(rows, 0, 1, MPI.INT, source, FROM_WORKER);
+                MPI.COMM_WORLD.Recv(offsetBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
+                MPI.COMM_WORLD.Recv(rowsBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
 
-                var calculatedSubMatrixCBuffer = new int[rows][matrixSize];
+                var calculatedSubMatrixCBuffer = new int[rowsBuffer[0]][matrixSize];
 
-                MPI.COMM_WORLD.Recv(calculatedSubMatrixCBuffer, 0, rows * matrixSize, MPI.INT, source, FROM_WORKER);
+                MPI.COMM_WORLD.Recv(calculatedSubMatrixCBuffer, 0, rowsBuffer[0] * matrixSize, MPI.INT, source, FROM_WORKER);
                 System.out.printf("Received results from task %d\n", source);
             }
 
