@@ -16,4 +16,15 @@ public class MatrixFunctions {
 
         return result;
     }
+
+    public static int[][] GetSubMatrix(int offset, int rows, int[][] matrix) {
+        int columns = matrix[0].length;
+        var subMatrix = new int[rows][columns];
+
+        for (int i = 0; i < rows; i++) {
+            subMatrix[i] = matrix[offset + i];
+        }
+
+        return subMatrix;
+    }
 }
