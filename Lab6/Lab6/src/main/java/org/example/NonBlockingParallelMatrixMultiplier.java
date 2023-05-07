@@ -13,7 +13,7 @@ public class NonBlockingParallelMatrixMultiplier {
 
         int workersNumber, source, destination, averow, extra;
 
-        int matrixSize = 2000;
+        int matrixSize = 1000;
 
         MPI.Init(args);
         int tasksNumber = MPI.COMM_WORLD.Size();
@@ -37,44 +37,42 @@ public class NonBlockingParallelMatrixMultiplier {
 
             int offset = 0;
 
-            var offsetSends = new Request[workersNumber];
-            var rowsSends = new Request[workersNumber];
-            var subMatrixASends = new Request[workersNumber];
-            var matrixBSends = new Request[workersNumber];
-
             for (destination = 1; destination <= workersNumber; destination++) {
                 int rows = (destination <= extra) ? averow + 1 : averow;
 
-                offsetSends[destination - 1] = MPI.COMM_WORLD.Isend(new int[] { offset }, 0, 1, MPI.INT, destination, FROM_MASTER);
-                rowsSends[destination - 1] =  MPI.COMM_WORLD.Isend(new int[] { rows }, 0, 1, MPI.INT, destination, FROM_MASTER);
+                MPI.COMM_WORLD.Isend(new int[] { offset }, 0, 1, MPI.INT, destination, FROM_MASTER);
+                MPI.COMM_WORLD.Isend(new int[] { rows }, 0, 1, MPI.INT, destination, FROM_MASTER);
 
                 var subMatrixA = MatrixFunctions.GetSubMatrix(offset, rows, matrixA);
 
-                subMatrixASends[destination - 1] = MPI.COMM_WORLD.Isend(subMatrixA, 0, rows, MPI.OBJECT, destination, FROM_MASTER);
-                matrixBSends[destination - 1] = MPI.COMM_WORLD.Isend(matrixB, 0, matrixSize, MPI.OBJECT, destination, FROM_MASTER);
+                MPI.COMM_WORLD.Isend(subMatrixA, 0, rows, MPI.OBJECT, destination, FROM_MASTER);
+                MPI.COMM_WORLD.Isend(matrixB, 0, matrixSize, MPI.OBJECT, destination, FROM_MASTER);
 
                 offset += rows;
             }
 
-            Request.Waitall(offsetSends);
-            Request.Waitall(rowsSends);
-            Request.Waitall(subMatrixASends);
-            Request.Waitall(matrixBSends);
-
-            var offsetBuffer = new int[1];
+            var offsetsBuffer = new int[workersNumber];
             var rowsBuffer = new int[1];
 
+            var offsetReceives = new Request[workersNumber];
+            var calculatedSubMatrixReceives = new Request[workersNumber];
+            var calculatedSubMatricesC = new int[workersNumber][][];
+
             for (source = 1; source <= workersNumber; source++) {
-                var offsetReceive = MPI.COMM_WORLD.Irecv(offsetBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
+                offsetReceives[source - 1] = MPI.COMM_WORLD.Irecv(offsetsBuffer, source - 1, 1, MPI.INT, source, FROM_WORKER);
                 var rowsReceive = MPI.COMM_WORLD.Irecv(rowsBuffer, 0, 1, MPI.INT, source, FROM_WORKER);
 
                 rowsReceive.Wait();
 
-                var calculatedSubMatrixC = new int[rowsBuffer[0]][matrixSize];
-                var calculatedSubMatrixReceive = MPI.COMM_WORLD.Irecv(calculatedSubMatrixC, 0, rowsBuffer[0], MPI.OBJECT, source, FROM_WORKER);
+                calculatedSubMatricesC[source - 1] = new int[rowsBuffer[0]][matrixSize];
+                calculatedSubMatrixReceives[source - 1] = MPI.COMM_WORLD.Irecv(calculatedSubMatricesC[source - 1], 0, rowsBuffer[0], MPI.OBJECT, source, FROM_WORKER);
+            }
 
-                Request.Waitall(new Request[] { offsetReceive, calculatedSubMatrixReceive });
-                MatrixFunctions.AddSubMatrix(c, calculatedSubMatrixC, offsetBuffer[0]);
+            Request.Waitall(offsetReceives);
+            Request.Waitall(calculatedSubMatrixReceives);
+
+            for (var calculatedSubMatrixC: calculatedSubMatricesC) {
+                MatrixFunctions.AddSubMatrix(c, calculatedSubMatrixC, offsetsBuffer[0]);
             }
 
             var endTime = System.currentTimeMillis();
