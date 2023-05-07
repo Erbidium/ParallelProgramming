@@ -30,7 +30,7 @@ public class NonBlockingParallelMatrixMultiplier {
             var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
             var c = new int[matrixSize][matrixSize];
 
-            var startTime = MPI.Wtime();
+            var startTime = System.currentTimeMillis();
 
             averow = matrixSize / workersNumber;
             extra = matrixSize % workersNumber;
@@ -77,7 +77,7 @@ public class NonBlockingParallelMatrixMultiplier {
                 MatrixFunctions.AddSubMatrix(c, calculatedSubMatrixC, offsetBuffer[0]);
             }
 
-            var endTime = MPI.Wtime();
+            var endTime = System.currentTimeMillis();
 
             System.out.println(endTime - startTime);
 

@@ -29,7 +29,7 @@ public class BlockingParallelMatrixMultiplier {
             var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
             var c = new int[matrixSize][matrixSize];
 
-            var startTime = MPI.Wtime();
+            var startTime = System.currentTimeMillis();
 
             averow = matrixSize / workersNumber;
             extra = matrixSize % workersNumber;
@@ -62,15 +62,15 @@ public class BlockingParallelMatrixMultiplier {
                 MatrixFunctions.AddSubMatrix(c, calculatedSubMatrixC, offsetBuffer[0]);
             }
 
-            var endTime = MPI.Wtime();
+            var endTime = System.currentTimeMillis();
 
-            //System.out.println(endTime - startTime);
+            System.out.println(endTime - startTime);
 
-            System.out.println("****\n");
-            System.out.println("Result Matrix:\n");
-            MatrixPrinter.Print(c);
-            System.out.println("\n********\n");
-            System.out.println("Done.\n");
+            //System.out.println("****\n");
+            //System.out.println("Result Matrix:\n");
+            //MatrixPrinter.Print(c);
+            //System.out.println("\n********\n");
+            //System.out.println("Done.\n");
         }
         else {
             var offset = new int[1];
