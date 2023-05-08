@@ -71,8 +71,8 @@ public class NonBlockingParallelMatrixMultiplier {
             Request.Waitall(offsetReceives);
             Request.Waitall(calculatedSubMatrixReceives);
 
-            for (var calculatedSubMatrixC: calculatedSubMatricesC) {
-                MatrixFunctions.AddSubMatrix(c, calculatedSubMatrixC, offsetsBuffer[0]);
+            for (int i = 0; i < calculatedSubMatricesC.length; i++) {
+                MatrixFunctions.AddSubMatrix(c, calculatedSubMatricesC[i], offsetsBuffer[i]);
             }
 
             var endTime = System.currentTimeMillis();
