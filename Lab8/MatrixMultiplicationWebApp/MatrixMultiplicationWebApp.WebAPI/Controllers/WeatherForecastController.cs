@@ -1,3 +1,4 @@
+using MatrixMultiplicationWebApp.WebAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatrixMultiplicationWebApp.WebAPI.Controllers;
@@ -6,27 +7,15 @@ namespace MatrixMultiplicationWebApp.WebAPI.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
+    [HttpPost("multiply-random-matrices/{matrixSize:int}")]
+    public int[][] MultiplyRandomMatrices(int matrixSize)
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-    private readonly ILogger<WeatherForecastController> _logger;
-
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
-    {
-        _logger = logger;
+        return new[] { new [] { 1 }, new [] { 1 }, new [] { 1 } };
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    [HttpPost("multiply-given-matrices/")]
+    public int[][] MultiplyRandomMatrices(MultiplicationDataDto multiplicationData)
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        return new[] { new [] { 1 }, new [] { 1 }, new [] { 1 } };
     }
 }
