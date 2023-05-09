@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using MatrixMultiplicationWebApp.Core;
 using MatrixMultiplicationWebApp.WebAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +18,17 @@ public class WeatherForecastController : ControllerBase
 
         var matrixMultiplier = new ParallelStrippedMatrixMultiplier();
 
+        int[][]? DeserializeMatrixBytes(byte[] serializedBytes)
+        {
+            var utf8Reader = new Utf8JsonReader(serializedBytes);
+            return JsonSerializer.Deserialize<int[][]>(ref utf8Reader);
+        }
+
         var multiplicationResult = await matrixMultiplier.Multiply(matrixA, matrixB);
 
-        return multiplicationResult.GetMatrix();
+        var serializedBytes = JsonSerializer.SerializeToUtf8Bytes(multiplicationResult.GetMatrix());
+
+        return DeserializeMatrixBytes(serializedBytes)!;
     }
 
     [HttpPost("multiply-given-matrices/")]
