@@ -56,7 +56,8 @@ public class CollectiveMatrixMultiplier {
         var calculatedRows = MatrixFunctions.Multiply(workerMatrixAPart, matrixB);
         var result = new int[matrixSize][];
 
-        MPI.COMM_WORLD.Allgatherv(calculatedRows, 0, calculatedRows.length, MPI.OBJECT, result, 0, counts, displs, MPI.OBJECT);
+        MPI.COMM_WORLD.Gatherv(calculatedRows, 0, calculatedRows.length, MPI.OBJECT, result,0, counts, displs, MPI.OBJECT, MASTER);
+        //MPI.COMM_WORLD.Allgatherv(calculatedRows, 0, calculatedRows.length, MPI.OBJECT, result, 0, counts, displs, MPI.OBJECT);
 
         if (rank == MASTER) {
             endTime = System.currentTimeMillis();
@@ -64,7 +65,7 @@ public class CollectiveMatrixMultiplier {
             System.out.println(endTime - startTime);
             //System.out.println("****\n");
             //System.out.println("Result Matrix:\n");
-            //MatrixPrinter.Print(result);
+            MatrixPrinter.Print(result);
             //System.out.println("\n********\n");
             //System.out.println("Done.\n");
         }
