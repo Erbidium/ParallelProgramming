@@ -11,4 +11,8 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MatrixMultiplicationWebApp.Core\MatrixMultiplicationWebApp.Core.csproj" />
+    </ItemGroup>
+
 </Project>
