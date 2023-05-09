@@ -11,24 +11,18 @@ namespace MatrixMultiplicationWebApp.WebAPI.Controllers;
 public class WeatherForecastController : ControllerBase
 {
     [HttpPost("multiply-random-matrices/{matrixSize:int}")]
-    public async Task<int[][]> MultiplyRandomMatrices(int matrixSize)
+    public async Task<FileStreamResult> MultiplyRandomMatrices(int matrixSize)
     {
         var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
         var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
 
         var matrixMultiplier = new ParallelStrippedMatrixMultiplier();
 
-        int[][]? DeserializeMatrixBytes(byte[] serializedBytes)
-        {
-            var utf8Reader = new Utf8JsonReader(serializedBytes);
-            return JsonSerializer.Deserialize<int[][]>(ref utf8Reader);
-        }
-
         var multiplicationResult = await matrixMultiplier.Multiply(matrixA, matrixB);
 
         var serializedBytes = JsonSerializer.SerializeToUtf8Bytes(multiplicationResult.GetMatrix());
 
-        return DeserializeMatrixBytes(serializedBytes)!;
+        return File(new MemoryStream(serializedBytes), "application/octet-stream");
     }
 
     [HttpPost("multiply-given-matrices/")]
