@@ -1,3 +1,4 @@
+using MatrixMultiplicationWebApp.Core;
 using MatrixMultiplicationWebApp.WebAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +9,16 @@ namespace MatrixMultiplicationWebApp.WebAPI.Controllers;
 public class WeatherForecastController : ControllerBase
 {
     [HttpPost("multiply-random-matrices/{matrixSize:int}")]
-    public int[][] MultiplyRandomMatrices(int matrixSize)
+    public async Task<int[][]> MultiplyRandomMatrices(int matrixSize)
     {
-        return new[] { new [] { 1 }, new [] { 1 }, new [] { 1 } };
+        var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
+        var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
+
+        var matrixMultiplier = new ParallelStrippedMatrixMultiplier();
+
+        var multiplicationResult = await matrixMultiplier.Multiply(matrixA, matrixB);
+
+        return multiplicationResult.GetMatrix();
     }
 
     [HttpPost("multiply-given-matrices/")]

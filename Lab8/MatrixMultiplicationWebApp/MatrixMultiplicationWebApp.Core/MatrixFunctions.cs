@@ -8,10 +8,13 @@ public static class MatrixFunctions
         var columns = matrix[0].Length;
 
         var transposedMatrix = new int[columns][];
+        for (int i = 0; i < columns; i++)
+        {
+            transposedMatrix[i] = new int[rows];
+        }
 
         for(int i = 0; i < rows; i++)
         {
-            transposedMatrix[i] = new int[rows];
             for (int j = 0; j < columns; j++)
             {
                 transposedMatrix[j][i] = matrix[i][j];
