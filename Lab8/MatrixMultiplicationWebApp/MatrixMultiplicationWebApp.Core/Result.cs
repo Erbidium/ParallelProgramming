@@ -1,34 +1,34 @@
 ﻿namespace MatrixMultiplicationWebApp.Core;
 
 public class Result {
-    private int[][] matrix;
+    private readonly int[][] _matrix;
 
     public Result(int matrixSize)
     {
-        matrix = new int[matrixSize][];
-        for (int i = 0; i < matrix.Length; i++)
+        _matrix = new int[matrixSize][];
+        for (int i = 0; i < _matrix.Length; i++)
         {
-            matrix[i] = new int[matrixSize];
+            _matrix[i] = new int[matrixSize];
         }
     }
 
     public Result(int[][] matrix)
     {
-        this.matrix = matrix;
+        _matrix = matrix;
     }
 
     public int[][] GetMatrix() {
-        return matrix;
+        return _matrix;
     }
 
     public void WriteValueToCell(int cellValue, int row, int column)
     {
-        matrix[row][column] = cellValue;
+        _matrix[row][column] = cellValue;
     }
 
     public void AddValueToCell(int cellValue, int row, int column)
     {
-        matrix[row][column] += cellValue;
+        _matrix[row][column] += cellValue;
     }
 
     public void AddSubMatrix(int[][] subMatrix, int row, int column)
@@ -37,7 +37,7 @@ public class Result {
         {
             for (int j = 0; j < subMatrix[0].Length; j++)
             {
-                matrix[row + i][column + j] += subMatrix[i][j];
+                _matrix[row + i][column + j] += subMatrix[i][j];
             }
         }
     }
