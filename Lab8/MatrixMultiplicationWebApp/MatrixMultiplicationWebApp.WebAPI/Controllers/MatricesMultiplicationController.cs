@@ -10,19 +10,33 @@ namespace MatrixMultiplicationWebApp.WebAPI.Controllers;
 [Route("api/[controller]")]
 public class MatricesMultiplicationController : ControllerBase
 {
-    [HttpPost("multiply-random-matrices/{matrixSize:int}")]
-    public async Task<FileStreamResult> MultiplyRandomMatrices(int matrixSize)
+    private readonly IMatrixMultiplier _matrixMultiplier;
+    
+    public MatricesMultiplicationController(IMatrixMultiplier matrixMultiplier)
     {
-        var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
-        var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
+        _matrixMultiplier = matrixMultiplier;
+    }
+    
+    
+    [HttpPost("multiply-generated-matrices/{matrixSize:int}")]
+    public async Task<FileStreamResult> MultiplyGeneratedMatrices(int matrixSize, bool generateRandomMatrices)
+    {
+        int[][] matrixA;
+        int[][] matrixB;
+        if (generateRandomMatrices)
+        {
+            matrixA = MatrixGenerator.GenerateRandomMatrix(matrixSize);
+            matrixB = MatrixGenerator.GenerateRandomMatrix(matrixSize);
+        }
+        else
+        {
+            matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
+            matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
+        }
 
-        var matrixMultiplier = new ParallelStrippedMatrixMultiplier();
+        var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
 
-        var multiplicationResult = await matrixMultiplier.Multiply(matrixA, matrixB);
-
-        var serializedBytes = JsonSerializer.SerializeToUtf8Bytes(multiplicationResult.GetMatrix());
-
-        return File(new MemoryStream(serializedBytes), "application/octet-stream");
+        return MatrixToFileStreamResult(multiplicationResult.GetMatrix());
     }
 
     [HttpPost("multiply-given-matrices/")]
@@ -31,11 +45,14 @@ public class MatricesMultiplicationController : ControllerBase
         var matrixA = multiplicationData.MatrixA;
         var matrixB = multiplicationData.MatrixB;
 
-        var matrixMultiplier = new ParallelStrippedMatrixMultiplier();
+        var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
 
-        var multiplicationResult = await matrixMultiplier.Multiply(matrixA, matrixB);
+        return MatrixToFileStreamResult(multiplicationResult.GetMatrix());
+    }
 
-        var serializedBytes = JsonSerializer.SerializeToUtf8Bytes(multiplicationResult.GetMatrix());
+    private FileStreamResult MatrixToFileStreamResult(int[][] matrix)
+    {
+        var serializedBytes = JsonSerializer.SerializeToUtf8Bytes(matrix);
 
         return File(new MemoryStream(serializedBytes), "application/octet-stream");
     }
