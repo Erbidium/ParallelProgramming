@@ -35,12 +35,11 @@ public class ParallelStrippedMatrixMultiplier : IMatrixMultiplier
         {
             for (int j = 0; j < matrixSize; j++)
             {
-                var index = j;
+                var row = matrixA[j];
+                var column = matrixBColumns[columnIndices[j]];
+
                 tasks.Add(Task.Run(() =>
                 {
-                    var row = matrixA[index];
-                    var column = matrixBColumns[columnIndices[index]];
-
                     int multiplicationResult = 0;
                     for (int k = 0; k < row.Length; k++)
                     {
