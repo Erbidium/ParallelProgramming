@@ -5,12 +5,6 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using MatrixMultiplicationWebApp.Shared;
 
-int[][]? DeserializeMatrixBytes(byte[] serializedBytes)
-{
-    var utf8Reader = new Utf8JsonReader(serializedBytes);
-    return JsonSerializer.Deserialize<int[][]>(ref utf8Reader);
-}
-
 async Task SendRequestWithSize()
 {
     using var client = new HttpClient();
@@ -20,7 +14,7 @@ async Task SendRequestWithSize()
     if (response.IsSuccessStatusCode)
     {
         var bytes = await response.Content.ReadAsByteArrayAsync();
-        int[][] resultMatrix = DeserializeMatrixBytes(bytes)!;
+        int[][] resultMatrix = SerializationHelper.DeserializeMatrixFromBytes(bytes)!;
         var totalTime = Stopwatch.GetElapsedTime(startTime);
         Console.WriteLine(totalTime.TotalSeconds);
         /*
@@ -73,7 +67,7 @@ async Task SendRequestWithMatrices()
     if (response.IsSuccessStatusCode)
     {
         var bytes = await response.Content.ReadAsByteArrayAsync();
-        int[][] resultMatrix = DeserializeMatrixBytes(bytes)!;
+        int[][] resultMatrix = SerializationHelper.DeserializeMatrixFromBytes(bytes)!;
         var totalTime = Stopwatch.GetElapsedTime(startTime);
         Console.WriteLine(totalTime.TotalSeconds);
         /*foreach (var row in resultMatrix)

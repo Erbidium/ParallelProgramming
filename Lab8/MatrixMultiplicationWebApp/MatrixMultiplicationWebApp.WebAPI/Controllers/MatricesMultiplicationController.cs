@@ -44,28 +44,23 @@ public class MatricesMultiplicationController : ControllerBase
     [RequestSizeLimit(100_000_000)]
     public async Task<FileStreamResult> MultiplyRandomMatrices(IFormFileCollection files)
     {
-        int[][]? DeserializeMatrixBytes(byte[] serializedBytes)
-        {
-            var utf8Reader = new Utf8JsonReader(serializedBytes);
-            return JsonSerializer.Deserialize<int[][]>(ref utf8Reader);
-        }
-
-        byte[] FileToBytes(IFormFile file)
-        {
-            using var stream = new MemoryStream();
-            file.CopyTo(stream);
-            return stream.ToArray();
-        }
 
         var fileA = files[0];
         var fileB = files[1];
 
-        var matrixA = DeserializeMatrixBytes(FileToBytes(fileA));
-        var matrixB = DeserializeMatrixBytes(FileToBytes(fileB));
+        var matrixA = SerializationHelper.DeserializeMatrixFromBytes(FileToBytes(fileA));
+        var matrixB = SerializationHelper.DeserializeMatrixFromBytes(FileToBytes(fileB));
 
         var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
 
         return MatrixToFileStreamResult(multiplicationResult.GetMatrix());
+    }
+    
+    private byte[] FileToBytes(IFormFile file)
+    {
+        using var stream = new MemoryStream();
+        file.CopyTo(stream);
+        return stream.ToArray();
     }
 
     private FileStreamResult MatrixToFileStreamResult(int[][] matrix)
