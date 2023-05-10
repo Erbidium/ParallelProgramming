@@ -1,11 +1,20 @@
 ﻿using System.Diagnostics;
 using Client;
 
-var startTime = Stopwatch.GetTimestamp();
+var attemptsCount = 5;
+double timeSum = 0;
 
-//var resultMatrix = await MatricesMultiplicationRequestSender.SendMultiplicationRequestWithSize(2000);
-var resultMatrix = await MatricesMultiplicationRequestSender.SendRequestWithMatrices(2000);
+for (int i = 0; i < attemptsCount; i++)
+{
+    var startTime = Stopwatch.GetTimestamp();
+    
+    //var resultMatrix = await MatricesMultiplicationRequestSender.SendMultiplicationRequestWithSize(1000);
+    var resultMatrix = await MatricesMultiplicationRequestSender.SendRequestWithMatrices(500);
+    
+    var totalTime = Stopwatch.GetElapsedTime(startTime);
+    timeSum += totalTime.TotalMilliseconds;
+    
+    //MatrixPrinter.Print(resultMatrix);
+}
 
-var totalTime = Stopwatch.GetElapsedTime(startTime);
-Console.WriteLine(totalTime.TotalSeconds);
-//MatrixPrinter.Print(resultMatrix);
+Console.WriteLine(timeSum / attemptsCount);

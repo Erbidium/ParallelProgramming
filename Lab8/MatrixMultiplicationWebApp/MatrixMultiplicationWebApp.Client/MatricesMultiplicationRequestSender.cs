@@ -41,8 +41,8 @@ public class MatricesMultiplicationRequestSender
             return fileContent;
         }
 
-        var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(2000, 1);
-        var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(2000, 1);
+        var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
+        var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
 
         using var content = new MultipartFormDataContent();
     
