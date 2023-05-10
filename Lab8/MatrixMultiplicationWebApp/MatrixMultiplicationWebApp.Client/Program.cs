@@ -13,11 +13,12 @@ async Task SendRequestWithSize()
     var response = await client.PostAsync($"http://localhost:5172/api/MatricesMultiplication/multiply-generated-matrices/{2000}", null);
     if (response.IsSuccessStatusCode)
     {
-        var bytes = await response.Content.ReadAsByteArrayAsync();
+        var base64String = await response.Content.ReadAsStringAsync();
+        var bytes = Convert.FromBase64String(base64String);
         int[][] resultMatrix = SerializationHelper.DeserializeMatrixFromBytes(bytes)!;
         var totalTime = Stopwatch.GetElapsedTime(startTime);
         Console.WriteLine(totalTime.TotalSeconds);
-        /*
+        
         foreach (var row in resultMatrix)
         {
             foreach (var element in row)
@@ -26,7 +27,7 @@ async Task SendRequestWithSize()
             }
             Console.WriteLine();
         }
-        */
+        
     }
     else
     {
@@ -66,7 +67,8 @@ async Task SendRequestWithMatrices()
     var response = await client.PostAsync($"http://localhost:5172/api/MatricesMultiplication/multiply-given-matrices", content);
     if (response.IsSuccessStatusCode)
     {
-        var bytes = await response.Content.ReadAsByteArrayAsync();
+        var base64String = await response.Content.ReadAsStringAsync();
+        var bytes = Convert.FromBase64String(base64String);
         int[][] resultMatrix = SerializationHelper.DeserializeMatrixFromBytes(bytes)!;
         var totalTime = Stopwatch.GetElapsedTime(startTime);
         Console.WriteLine(totalTime.TotalSeconds);
@@ -85,5 +87,5 @@ async Task SendRequestWithMatrices()
     }
 }
 
-//await SendRequestWithSize();
-await SendRequestWithMatrices();
+await SendRequestWithSize();
+//await SendRequestWithMatrices();

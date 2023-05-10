@@ -20,7 +20,7 @@ public class MatricesMultiplicationController : ControllerBase
     
     
     [HttpPost("multiply-generated-matrices/{matrixSize:int}")]
-    public async Task<FileStreamResult> MultiplyGeneratedMatrices(int matrixSize, bool generateRandomMatrices)
+    public async Task<string> MultiplyGeneratedMatrices(int matrixSize, bool generateRandomMatrices)
     {
         int[][] matrixA;
         int[][] matrixB;
@@ -37,12 +37,12 @@ public class MatricesMultiplicationController : ControllerBase
 
         var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
 
-        return MatrixToFileStreamResult(multiplicationResult.GetMatrix());
+        return MatrixToBase64String(multiplicationResult.GetMatrix());
     }
 
     [HttpPost("multiply-given-matrices/")]
     [RequestSizeLimit(100_000_000)]
-    public async Task<FileStreamResult> MultiplyRandomMatrices(IFormFileCollection files)
+    public async Task<string> MultiplyRandomMatrices(IFormFileCollection files)
     {
 
         var fileA = files[0];
@@ -53,7 +53,7 @@ public class MatricesMultiplicationController : ControllerBase
 
         var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
 
-        return MatrixToFileStreamResult(multiplicationResult.GetMatrix());
+        return MatrixToBase64String(multiplicationResult.GetMatrix());
     }
     
     private byte[] FileToBytes(IFormFile file)
@@ -63,10 +63,10 @@ public class MatricesMultiplicationController : ControllerBase
         return stream.ToArray();
     }
 
-    private FileStreamResult MatrixToFileStreamResult(int[][] matrix)
+    private string MatrixToBase64String(int[][] matrix)
     {
         var serializedBytes = JsonSerializer.SerializeToUtf8Bytes(matrix);
 
-        return File(new MemoryStream(serializedBytes), "application/octet-stream");
+        return Convert.ToBase64String(serializedBytes);
     }
 }
