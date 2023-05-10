@@ -9,4 +9,8 @@
         <RootNamespace>Client</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\MatrixMultiplicationWebApp.Shared\MatrixMultiplicationWebApp.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

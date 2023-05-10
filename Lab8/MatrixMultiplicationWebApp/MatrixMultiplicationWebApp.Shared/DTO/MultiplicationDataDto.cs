@@ -1,4 +1,4 @@
-﻿namespace MatrixMultiplicationWebApp.WebAPI.DTO;
+﻿namespace MatrixMultiplicationWebApp.Shared.DTO;
 
 public class MultiplicationDataDto
 {

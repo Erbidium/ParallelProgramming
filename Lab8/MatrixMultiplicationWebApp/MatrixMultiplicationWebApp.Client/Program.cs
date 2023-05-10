@@ -1,6 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text.Json;
+using MatrixMultiplicationWebApp.Shared;
 
 int[][]? DeserializeMatrixBytes(byte[] serializedBytes)
 {
@@ -8,25 +11,85 @@ int[][]? DeserializeMatrixBytes(byte[] serializedBytes)
     return JsonSerializer.Deserialize<int[][]>(ref utf8Reader);
 }
 
-Console.WriteLine("Hello, World!");
-
-using var client = new HttpClient();
-
-var response = await client.PostAsync($"http://localhost:5172/WeatherForecast/multiply-random-matrices/{2000}", null);
-if (response.IsSuccessStatusCode)
+async Task SendRequestWithSize()
 {
-    var bytes = await response.Content.ReadAsByteArrayAsync();
-    int[][] resultMatrix = DeserializeMatrixBytes(bytes)!;
-    foreach (var row in resultMatrix)
+    using var client = new HttpClient();
+
+    var startTime = Stopwatch.GetTimestamp();
+    var response = await client.PostAsync($"http://localhost:5172/api/MatricesMultiplication/multiply-generated-matrices/{2000}", null);
+    if (response.IsSuccessStatusCode)
     {
-        foreach (var element in row)
+        var bytes = await response.Content.ReadAsByteArrayAsync();
+        int[][] resultMatrix = DeserializeMatrixBytes(bytes)!;
+        var totalTime = Stopwatch.GetElapsedTime(startTime);
+        Console.WriteLine(totalTime.TotalSeconds);
+        /*
+        foreach (var row in resultMatrix)
         {
-            Console.Write($"{element} ");
+            foreach (var element in row)
+            {
+                Console.Write($"{element} ");
+            }
+            Console.WriteLine();
         }
-        Console.WriteLine();
+        */
+    }
+    else
+    {
+        Console.WriteLine($"Error: {response.StatusCode}");
     }
 }
-else
+
+async Task SendRequestWithMatrices()
 {
-    Console.WriteLine($"Error: {response.StatusCode}");
+    StreamContent CreateFileContent(Stream stream, string fileName, string contentType)
+    {
+        var fileContent = new StreamContent(stream);
+        fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") 
+        { 
+            Name = "\"files\"", 
+            FileName = "\"" + fileName + "\""
+        };
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);            
+        return fileContent;
+    }
+    
+    using var client = new HttpClient();
+
+    var startTime = Stopwatch.GetTimestamp();
+
+    var matrixA = MatrixGenerator.GenerateMatrixFilledWithValue(2000, 1);
+    var matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(2000, 1);
+
+    using var content = new MultipartFormDataContent();
+    
+    var serializedMatrixA = JsonSerializer.SerializeToUtf8Bytes(matrixA);
+    var serializedMatrixB = JsonSerializer.SerializeToUtf8Bytes(matrixB);
+
+    content.Add(CreateFileContent(new MemoryStream(serializedMatrixA), "matrixA", "application/octet-stream"));
+    content.Add(CreateFileContent(new MemoryStream(serializedMatrixB), "matrixB", "application/octet-stream"));
+
+    var response = await client.PostAsync($"http://localhost:5172/api/MatricesMultiplication/multiply-given-matrices", content);
+    if (response.IsSuccessStatusCode)
+    {
+        var bytes = await response.Content.ReadAsByteArrayAsync();
+        int[][] resultMatrix = DeserializeMatrixBytes(bytes)!;
+        var totalTime = Stopwatch.GetElapsedTime(startTime);
+        Console.WriteLine(totalTime.TotalSeconds);
+        /*foreach (var row in resultMatrix)
+        {
+            foreach (var element in row)
+            {
+                Console.Write($"{element} ");
+            }
+            Console.WriteLine();
+        }*/
+    }
+    else
+    {
+        Console.WriteLine($"Error: {response.StatusCode}");
+    }
 }
+
+//await SendRequestWithSize();
+await SendRequestWithMatrices();

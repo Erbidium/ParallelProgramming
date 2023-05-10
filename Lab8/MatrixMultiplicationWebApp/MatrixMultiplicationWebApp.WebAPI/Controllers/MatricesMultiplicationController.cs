@@ -1,8 +1,9 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using MatrixMultiplicationWebApp.Shared.DTO;
 using MatrixMultiplicationWebApp.Core;
-using MatrixMultiplicationWebApp.WebAPI.DTO;
+using MatrixMultiplicationWebApp.Shared;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace MatrixMultiplicationWebApp.WebAPI.Controllers;
 
@@ -40,10 +41,27 @@ public class MatricesMultiplicationController : ControllerBase
     }
 
     [HttpPost("multiply-given-matrices/")]
-    public async Task<FileStreamResult> MultiplyRandomMatrices(MultiplicationDataDto multiplicationData)
+    [RequestSizeLimit(100_000_000)]
+    public async Task<FileStreamResult> MultiplyRandomMatrices(IFormFileCollection files)
     {
-        var matrixA = multiplicationData.MatrixA;
-        var matrixB = multiplicationData.MatrixB;
+        int[][]? DeserializeMatrixBytes(byte[] serializedBytes)
+        {
+            var utf8Reader = new Utf8JsonReader(serializedBytes);
+            return JsonSerializer.Deserialize<int[][]>(ref utf8Reader);
+        }
+
+        byte[] FileToBytes(IFormFile file)
+        {
+            using var stream = new MemoryStream();
+            file.CopyTo(stream);
+            return stream.ToArray();
+        }
+
+        var fileA = files[0];
+        var fileB = files[1];
+
+        var matrixA = DeserializeMatrixBytes(FileToBytes(fileA));
+        var matrixB = DeserializeMatrixBytes(FileToBytes(fileB));
 
         var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
 

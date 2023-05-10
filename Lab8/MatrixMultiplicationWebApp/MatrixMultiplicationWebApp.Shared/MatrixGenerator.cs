@@ -1,4 +1,4 @@
-﻿namespace MatrixMultiplicationWebApp.Core;
+﻿namespace MatrixMultiplicationWebApp.Shared;
 
 public class MatrixGenerator {
     public static int[][] GenerateMatrixFilledWithValue(int matrixSize, int value)
