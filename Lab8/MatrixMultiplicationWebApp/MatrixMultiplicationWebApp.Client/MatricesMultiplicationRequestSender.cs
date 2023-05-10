@@ -22,7 +22,7 @@ public class MatricesMultiplicationRequestSender
         throw new Exception($"Error: {response.StatusCode}");
     }
     
-    public async Task<int[][]> SendMultiplicationRequestWithSize(int matrixSize)
+    public async static Task<int[][]> SendMultiplicationRequestWithSize(int matrixSize)
     {
         return await SendMultiplicationRequest($"http://localhost:5172/api/MatricesMultiplication/multiply-generated-matrices/{matrixSize}", null);
     }

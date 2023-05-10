@@ -18,7 +18,7 @@ public class MatricesMultiplicationController : ControllerBase
     
     
     [HttpPost("multiply-generated-matrices/{matrixSize:int}")]
-    public async Task<string> MultiplyGeneratedMatrices(int matrixSize, bool generateRandomMatrices)
+    public string MultiplyGeneratedMatrices(int matrixSize, bool generateRandomMatrices)
     {
         int[][] matrixA;
         int[][] matrixB;
@@ -33,19 +33,19 @@ public class MatricesMultiplicationController : ControllerBase
             matrixB = MatrixGenerator.GenerateMatrixFilledWithValue(matrixSize, 1);
         }
 
-        var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
+        var multiplicationResult = _matrixMultiplier.Multiply(matrixA, matrixB);
 
         return MatrixToBase64String(multiplicationResult.GetMatrix());
     }
 
     [HttpPost("multiply-given-matrices/")]
     [RequestSizeLimit(100_000_000)]
-    public async Task<string> MultiplyGivenMatrices(IFormFileCollection files)
+    public string MultiplyGivenMatrices(IFormFileCollection files)
     {
         var matrixA = SerializationHelper.DeserializeMatrixFromBytes(FileToBytes(files[0]));
         var matrixB = SerializationHelper.DeserializeMatrixFromBytes(FileToBytes(files[1]));
 
-        var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
+        var multiplicationResult = _matrixMultiplier.Multiply(matrixA, matrixB);
 
         return MatrixToBase64String(multiplicationResult.GetMatrix());
     }

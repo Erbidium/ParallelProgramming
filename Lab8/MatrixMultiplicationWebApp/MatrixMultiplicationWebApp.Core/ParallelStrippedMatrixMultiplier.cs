@@ -2,20 +2,18 @@
 
 public class ParallelStrippedMatrixMultiplier : IMatrixMultiplier
 {
+    private int? _threadsNumber;
+    
     public ParallelStrippedMatrixMultiplier()
     {
     }
     
     public ParallelStrippedMatrixMultiplier(int threadsNumber)
     {
-        ThreadPool.GetMinThreads(out _, out var completionPortThreadsMin);
-        ThreadPool.SetMinThreads(threadsNumber, completionPortThreadsMin);
-        
-        ThreadPool.GetMaxThreads(out _, out var completionPortThreadsMax);
-        ThreadPool.SetMaxThreads(threadsNumber, completionPortThreadsMax);
+        _threadsNumber = threadsNumber;
     }
 
-    public async Task<Result> Multiply(int[][] matrixA, int[][] matrixB) {
+    public Result Multiply(int[][] matrixA, int[][] matrixB) {
         var matrixBColumns = MatrixFunctions.GetTransposed(matrixB);
 
         int matrixSize = matrixA.Length;
@@ -27,34 +25,27 @@ public class ParallelStrippedMatrixMultiplier : IMatrixMultiplier
             columnIndices[i] = i;
         }
 
-        var tasks = new List<Task<int>>();
-
         var result = new Result(matrixSize);
+
+        var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = _threadsNumber ?? 8 };
+
+        void Task(int rowIndex)
+        {
+            var row = matrixA[rowIndex];
+            var column = matrixBColumns[columnIndices[rowIndex]];
+
+            int multiplicationResult = 0;
+            for (int k = 0; k < row.Length; k++)
+            {
+                multiplicationResult += row[k] * column[k];
+            }
+
+            result.WriteValueToCell(multiplicationResult, rowIndex, columnIndices[rowIndex]);
+        }
 
         for (int i = 0; i < matrixSize; i++)
         {
-            for (int j = 0; j < matrixSize; j++)
-            {
-                var row = matrixA[j];
-                var column = matrixBColumns[columnIndices[j]];
-
-                tasks.Add(Task.Run(() =>
-                {
-                    int multiplicationResult = 0;
-                    for (int k = 0; k < row.Length; k++)
-                    {
-                        multiplicationResult += row[k] * column[k];
-                    }
-
-                    return multiplicationResult;
-                }));
-            }
-
-            for (int j = 0; j < matrixSize; j++) {
-                result.WriteValueToCell(await tasks[j], j, columnIndices[j]);
-            }
-
-            tasks.Clear();
+            Parallel.For(0, matrixSize, parallelOptions, Task);
 
             var lastIndex = columnIndices[matrixSize - 1];
             for (int j = matrixSize - 2; j >= 0; j--) {
