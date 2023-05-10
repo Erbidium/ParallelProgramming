@@ -8,11 +8,11 @@ public class ParallelStrippedMatrixMultiplier : IMatrixMultiplier
     
     public ParallelStrippedMatrixMultiplier(int threadsNumber)
     {
-        ThreadPool.GetMinThreads(out _, out var IOMin);
-        ThreadPool.SetMinThreads(threadsNumber, IOMin);
+        ThreadPool.GetMinThreads(out _, out var completionPortThreadsMin);
+        ThreadPool.SetMinThreads(threadsNumber, completionPortThreadsMin);
         
-        ThreadPool.GetMaxThreads(out _, out var IOMax);
-        ThreadPool.SetMaxThreads(threadsNumber, IOMax);
+        ThreadPool.GetMaxThreads(out _, out var completionPortThreadsMax);
+        ThreadPool.SetMaxThreads(threadsNumber, completionPortThreadsMax);
     }
 
     public async Task<Result> Multiply(int[][] matrixA, int[][] matrixB) {

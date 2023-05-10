@@ -1,9 +1,7 @@
 using System.Text.Json;
-using MatrixMultiplicationWebApp.Shared.DTO;
 using MatrixMultiplicationWebApp.Core;
 using MatrixMultiplicationWebApp.Shared;
 using Microsoft.AspNetCore.Mvc;
-using System.Web;
 
 namespace MatrixMultiplicationWebApp.WebAPI.Controllers;
 
@@ -42,21 +40,17 @@ public class MatricesMultiplicationController : ControllerBase
 
     [HttpPost("multiply-given-matrices/")]
     [RequestSizeLimit(100_000_000)]
-    public async Task<string> MultiplyRandomMatrices(IFormFileCollection files)
+    public async Task<string> MultiplyGivenMatrices(IFormFileCollection files)
     {
-
-        var fileA = files[0];
-        var fileB = files[1];
-
-        var matrixA = SerializationHelper.DeserializeMatrixFromBytes(FileToBytes(fileA));
-        var matrixB = SerializationHelper.DeserializeMatrixFromBytes(FileToBytes(fileB));
+        var matrixA = SerializationHelper.DeserializeMatrixFromBytes(FileToBytes(files[0]));
+        var matrixB = SerializationHelper.DeserializeMatrixFromBytes(FileToBytes(files[1]));
 
         var multiplicationResult = await _matrixMultiplier.Multiply(matrixA, matrixB);
 
         return MatrixToBase64String(multiplicationResult.GetMatrix());
     }
     
-    private byte[] FileToBytes(IFormFile file)
+    private static byte[] FileToBytes(IFormFile file)
     {
         using var stream = new MemoryStream();
         file.CopyTo(stream);
